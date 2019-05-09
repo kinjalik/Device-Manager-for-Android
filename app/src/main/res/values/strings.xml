@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Device Management</string>
-    <string name="s_login__login">Type your login here</string>
+    <string name="s_login__form__login">Type your login here</string>
     <string name="s_login__welcome">Sign in to get an access</string>
-    <string name="s_login__password">Type your password here</string>
-    <string name="s_login__login_button">Sign in</string>
-    <string name="s_login__register">Not registered yet? Sign up!</string>
+    <string name="s_login__form__password">Type your password here</string>
+    <string name="s_login__form__submit">Sign in</string>
+    <string name="s_login__change_screen">Not registered yet? Sign up!</string>
+    <string name="s_register__change_screen">Already registered? Log in!</string>
+    <string name="s_register__form__login">Your Login</string>
+    <string name="s_register__form__mail">Your E-Mail</string>
+    <string name="s_register__form__name">Your Name</string>
+    <string name="s_register__form__password">Your Password</string>
+    <string name="s_register__form__re_password">Password (again)</string>
+    <string name="s_register__form__submit">Register</string>
+    <string name="s_login__form__surname">Your Surname</string>
 </resources>
