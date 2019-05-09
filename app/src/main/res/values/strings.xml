@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Device Management</string>
+    <string name="s_login__login">Type your login here</string>
+    <string name="s_login__welcome">Sign in to get an access</string>
+    <string name="s_login__password">Type your password here</string>
+    <string name="s_login__login_button">Sign in</string>
+    <string name="s_login__register">Not registered yet? Sign up!</string>
+</resources>
