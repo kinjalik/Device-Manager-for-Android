@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <boolean name="inited" value="true" />
+    <string name="login" value="kinjalik" />
+    <string name="password" value="123456789" />
+</map>
