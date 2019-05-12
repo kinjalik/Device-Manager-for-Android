@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         Authorisation auth = Authorisation.getInstance(getApplicationContext());
 
         boolean isAuthed;
-        auth.isAuthorised(new Authorisation.Callback<Boolean>() {
+        auth.isAuthorised(new Callback<Boolean>() {
             @Override
             public void onResult(Boolean res) {
                     if (res) {

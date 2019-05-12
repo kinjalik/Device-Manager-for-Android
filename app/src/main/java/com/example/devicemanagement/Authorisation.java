@@ -3,6 +3,7 @@ package com.example.devicemanagement;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -36,17 +37,21 @@ class Authorisation {
     private static final String APP_PREFERENCES_LOGIN = "login";
     private static final String APP_PREFERENCES_PASSWORD = "password";
 
-    /*
-      if
-     */
-    public void authorise(String login, String passwd, final Callback<User> callback) {
-        mSettings.edit().putString(APP_PREFERENCES_LOGIN, login);
-        mSettings.edit().putString(APP_PREFERENCES_PASSWORD, passwd);
-        isAuthorised(new Callback<Boolean>() {
+    public void authorise(final String login, final String passwd, final Callback<Boolean> callback) {
+        getUserWithCreds(login, passwd, new Callback<User>() {
             @Override
-            public void onResult(Boolean res) {
-                // ToDo: ПЕРВЫМ ДЕЛОМ Вынести получение пользователя в отдельную функцию из isAuthorised
-                // ToDo: ПЕРВЫМ ДЕЛОМ Реализовать проверку данных и, если они правильные, их сохранение
+            public void onResult(User res) {
+                if (res != null && res.isHasPermit()) {
+                    Log.i(LOG_TAG, "Provided correct credentials. User authorised.");
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putString(APP_PREFERENCES_LOGIN, login);
+                    editor.putString(APP_PREFERENCES_PASSWORD, passwd);
+                    editor.apply();
+                    callback.onResult(true);
+                } else {
+                    Log.i(LOG_TAG, "Provided wrong credentials. Access denied.");
+                    callback.onResult(false);
+                }
             }
         });
     }
@@ -67,30 +72,45 @@ class Authorisation {
 
 
             final boolean[] isSuccess = new boolean[1];
-
-            NetworkService.getInstance().getApi().getUserWithCreds(login, passwd).enqueue(new retrofit2.Callback<User>() {
+            getUserWithCreds(login, passwd, new Callback<User>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    User u = response.body();
-                    if (u != null)
-                        callback.onResult(u.isHasPermit());
-                    else
+                public void onResult(User res) {
+                    if (res == null)
                         callback.onResult(false);
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Log.e(LOG_TAG, t.getMessage(), t);
-                    callback.onResult(false);
+                    else
+                        callback.onResult(res.isHasPermit());
                 }
             });
+
+
+
         } else {
             Log.i(LOG_TAG, "No credentials in SharedPref.");
             callback.onResult(false);
         }
     }
 
-    interface Callback<T> {
-        void onResult(T res);
+    public void register(User u, final Callback<Boolean> callback) {
+
     }
+
+    /*
+    Assisting functions
+     */
+    private void getUserWithCreds(String login, String passwd, final Callback<User> callback) {
+        NetworkService.getInstance().getApi().getUserWithCreds(login, passwd).enqueue(new retrofit2.Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                User u = response.body();
+                callback.onResult(u);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(LOG_TAG, t.getMessage(), t);
+                callback.onResult(null);
+            }
+        });
+    }
+
 }
