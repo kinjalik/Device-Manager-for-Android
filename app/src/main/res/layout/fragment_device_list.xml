@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeviceListFragment">
+    tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/device_list__view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/devices_recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+        android:padding="8dp"
+        tools:listitem="@layout/device_list_item"
+        />
 
 </FrameLayout>

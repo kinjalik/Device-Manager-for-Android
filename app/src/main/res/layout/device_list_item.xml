@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp">
-
-    <TextView
-        android:id="@+id/device_list__name"
-        android:layout_width="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp"
+    android:layout_marginBottom="4dp"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardElevation="2dp">
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginBottom="5dp"
-        />
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        tools:showIn="@id/devices_recycler_view">
 
-    <TextView
-        android:id="@+id/device_list__description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/device_list__name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginBottom="5dp"
+            tools:text="Device Name"
+            />
+
+        <TextView
+            android:id="@+id/device_list__description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="Device Description, it can be long"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

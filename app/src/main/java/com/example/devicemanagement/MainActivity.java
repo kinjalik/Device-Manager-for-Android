@@ -46,6 +46,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigation = findViewById(R.id.s_main__navigation);
         navigation.setNavigationItemSelectedListener(this);
 
+        fm = getSupportFragmentManager();
+
+        /*
+            USING DEVICE LIST AS MAIN SCREEN
+         */
+        Fragment f;
+        try {
+            f = DeviceListFragment.class.newInstance();
+        } catch (IllegalAccessException e) {
+            f = null;
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            f = null;
+            e.printStackTrace();
+        }
+
+        assert f != null;
+        fm.beginTransaction().replace(R.id.s_main__container, f).commit();
+
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -55,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /*
         NAVIGATION SECTION
      */
+
+    FragmentManager fm;
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -78,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
 
-        FragmentManager fm = getSupportFragmentManager();
+
         fm.beginTransaction().replace(R.id.s_main__container, fragment).commit();
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());

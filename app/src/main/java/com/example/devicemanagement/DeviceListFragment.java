@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,14 +27,31 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DeviceListFragment extends ListFragment {
+public class DeviceListFragment extends Fragment {
     private static final String LOG_TAG = "DEVICE_F";
     private static final String APP_PREFERENCES = "settings";
     private static final String APP_PREFERENCES_ID = "id";
 
+    Device[] devices;
+    ListView lv_devices;
+
+    public DeviceListFragment() {
+        // Required empty public constructor
+    }
+
+    private boolean mTwoPane = false;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (Objects.requireNonNull(getActivity()).findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
+
+
         int userId = Objects.requireNonNull(getActivity())
                 .getSharedPreferences(APP_PREFERENCES, 0)
                 .getInt(APP_PREFERENCES_ID, 0);
@@ -45,9 +63,12 @@ public class DeviceListFragment extends ListFragment {
                     @Override
                     public void onResponse(Call<Device[]> call, Response<Device[]> response) {
                         Log.i(LOG_TAG, "Device list downloaded");
-                        Device[] list = response.body();
-                        ListAdapter adapter = new DeviceAdapter(getActivity(), list);
-                        setListAdapter(adapter);
+
+                        Device[] devices = response.body();
+                        RecyclerView devicesList = Objects.requireNonNull(getActivity()).findViewById(R.id.devices_recycler_view);
+                        devicesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        DeviceRecyclerAdapter deviceAdapter = new DeviceRecyclerAdapter(devices);
+                        devicesList.setAdapter(deviceAdapter);
                     }
 
                     @Override
@@ -59,4 +80,12 @@ public class DeviceListFragment extends ListFragment {
                     }
                 });
     }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_device_list, container, false);
+    }
+
+
 }
