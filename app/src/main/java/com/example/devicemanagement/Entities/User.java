@@ -1,4 +1,4 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Entities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -63,31 +63,41 @@ public class User {
         return hasPermit;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     /*
         SETTERS
      */
 
-    public void setLogin(String login) {
+    public User setLogin(String login) {
         this.login = login;
+        return this;
     }
 
-    public void setName(String name) {
+    public User setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public void setSurname(String surname) {
+    public User setSurname(String surname) {
         this.surname = surname;
+        return this;
     }
 
-    public void setRegDate(Date regDate) {
-        this.regDate = regDate;
-    }
-
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
+
+    /*
+        SETTERS
+     */
+
 }

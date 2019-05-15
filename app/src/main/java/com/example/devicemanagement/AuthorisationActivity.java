@@ -1,16 +1,21 @@
 package com.example.devicemanagement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.devicemanagement.Entities.User;
+
 public class AuthorisationActivity extends AppCompatActivity {
+    private static final String LOG_TAG = "AUTH_A";
 
     public static final String APP_PREFERENCES = "settings";
     public static final String APP_PREFERENCES_INITED = "inited";
@@ -63,7 +68,8 @@ public class AuthorisationActivity extends AppCompatActivity {
                 public void onResult(Boolean res) {
                     if (res) {
                         Toast.makeText(AuthorisationActivity.this, "You successfully authorised", Toast.LENGTH_SHORT).show();
-                        finish();
+                        Intent transit = new Intent(AuthorisationActivity.this, MainActivity.class);
+                        startActivity(transit);
                     } else {
                         Toast.makeText(AuthorisationActivity.this, "Credentials are wrong. Try again.", Toast.LENGTH_SHORT).show();
                     }
@@ -89,14 +95,41 @@ public class AuthorisationActivity extends AppCompatActivity {
             String surname = surnameField.getText().toString();
             String password = passwordField.getText().toString();
             String rePassword = rePasswordField.getText().toString();
+            Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             
-            if (!password.equals(rePassword)) {
-                Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vb.vibrate(1000);
+            if (login.isEmpty() && email.isEmpty() && name.isEmpty() && surname.isEmpty() &&
+            password.isEmpty() && rePassword.isEmpty()) {
+                vb.vibrate(500);
+                Toast.makeText(AuthorisationActivity.this, "All fields must be filled!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!password.equals(rePassword)) {
+                vb.vibrate(500);
                 Toast.makeText(AuthorisationActivity.this, "Passwords must be identical. ", Toast.LENGTH_SHORT).show();
+                return;
             }
-            // ToDo: Проверка на пустоту полей
-            // ToDo: Доделать логику регшистрации
+
+            User u = new User();
+            u.setLogin(login)
+                    .setEmail(email)
+                    .setName(name)
+                    .setSurname(name)
+                    .setPassword(password);
+
+            // ToDo: Сделать проверку данных на непустоту, а так же на правильность почты, надежность пароля
+
+            authorisation.register(u, new Callback<User>() {
+                @Override
+                public void onResult(User res) {
+                    if (res == null) {
+                        Toast.makeText(AuthorisationActivity.this, "Something gone wrong...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.i(LOG_TAG, "Registered successfully. Quiting...");
+                        Toast.makeText(AuthorisationActivity.this, "Registered succesfully.", Toast.LENGTH_SHORT).show();
+                        Intent transit = new Intent(AuthorisationActivity.this, MainActivity.class);
+                        startActivity(transit);
+                    }
+                }
+            });
         }
     };
 

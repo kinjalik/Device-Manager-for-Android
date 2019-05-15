@@ -3,9 +3,8 @@ package com.example.devicemanagement;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.IOException;
+import com.example.devicemanagement.Entities.User;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -34,8 +33,11 @@ class Authorisation {
     // Singleton management END
 
     private static final String APP_PREFERENCES = "settings";
+    private static final String APP_PREFERENCES_ID = "id";
     private static final String APP_PREFERENCES_LOGIN = "login";
     private static final String APP_PREFERENCES_PASSWORD = "password";
+
+    private final BackendApi api = NetworkService.getInstance().getApi();
 
     public void authorise(final String login, final String passwd, final Callback<Boolean> callback) {
         getUserWithCreds(login, passwd, new Callback<User>() {
@@ -46,6 +48,7 @@ class Authorisation {
                     SharedPreferences.Editor editor = mSettings.edit();
                     editor.putString(APP_PREFERENCES_LOGIN, login);
                     editor.putString(APP_PREFERENCES_PASSWORD, passwd);
+                    editor.putInt(APP_PREFERENCES_ID, res.getId());
                     editor.apply();
                     callback.onResult(true);
                 } else {
@@ -90,15 +93,29 @@ class Authorisation {
         }
     }
 
-    public void register(User u, final Callback<Boolean> callback) {
+    public void register(final User u, final Callback<User> callback) {
+        api.registerUser(u).enqueue(new retrofit2.Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                mSettings.edit().putString(APP_PREFERENCES_LOGIN, u.getLogin()).apply();
+                mSettings.edit().putString(APP_PREFERENCES_PASSWORD, u.getPassword()).apply();
+                mSettings.edit().putInt(APP_PREFERENCES_ID, response.body().getId()).apply();
+                callback.onResult(response.body());
+            }
 
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(LOG_TAG, t.getMessage(), t);
+                callback.onResult(null);
+            }
+        });
     }
 
     /*
     Assisting functions
      */
     private void getUserWithCreds(String login, String passwd, final Callback<User> callback) {
-        NetworkService.getInstance().getApi().getUserWithCreds(login, passwd).enqueue(new retrofit2.Callback<User>() {
+        api.getUserWithCreds(login, passwd).enqueue(new retrofit2.Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User u = response.body();

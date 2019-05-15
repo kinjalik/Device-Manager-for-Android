@@ -1,5 +1,8 @@
 package com.example.devicemanagement;
 
+import com.example.devicemanagement.Entities.Device;
+import com.example.devicemanagement.Entities.User;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -19,4 +22,8 @@ public interface BackendApi {
 
     @POST("/users")
     public Call<User> registerUser(@Body User data);
+
+    // ToDo: ПЕРВЫМ ДЕЛОМ! Эндпоинты по устройствам
+    @GET("/users/{id}/devices")
+    public Call<Device[]> getUsersDevices(@Path("id") int id);
 }
