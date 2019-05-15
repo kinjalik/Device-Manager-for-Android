@@ -18,6 +18,7 @@ public class DeviceRecyclerAdapter extends RecyclerView.Adapter<DeviceRecyclerAd
         private TextView deviceDescription;
         private final boolean mTwoPane;
 
+        // ToDo: Реализация выбора устройства с подгрузкой в зависимости от устройства: планшет или смартфон
         public ViewHolder(View itemView) {
             super(itemView);
             deviceName = itemView.findViewById(R.id.device_list__name);
