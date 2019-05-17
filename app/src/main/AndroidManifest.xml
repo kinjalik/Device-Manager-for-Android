@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".InitActivity">
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.DeviceDetailActivity" />
+        <activity android:name=".Activities.InitActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +34,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".AuthorisationActivity" />
+        <activity android:name=".Activities.AuthorisationActivity" />
     </application>
 
 </manifest>

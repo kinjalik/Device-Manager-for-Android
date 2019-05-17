@@ -17,6 +17,5 @@
     <string name="nav_drawer_open">Open navigation bar</string>
     <string name="nav_drawer_close">Close navigation bar</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

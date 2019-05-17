@@ -1,7 +1,6 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Activities;
 
 import android.content.res.Configuration;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+
+import com.example.devicemanagement.Fragments.DeviceListFragment;
+import com.example.devicemanagement.R;
 
 /*
     IT IS NOT AN ENTY POINT OF AN APP!

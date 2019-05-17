@@ -1,6 +1,7 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Network;
 
 import com.example.devicemanagement.Entities.Device;
+import com.example.devicemanagement.Entities.DeviceProperty;
 import com.example.devicemanagement.Entities.User;
 
 import retrofit2.Call;
@@ -26,4 +27,10 @@ public interface BackendApi {
     // ToDo: ПЕРВЫМ ДЕЛОМ! Эндпоинты по устройствам
     @GET("/users/{id}/devices")
     public Call<Device[]> getUsersDevices(@Path("id") int id);
+
+    @GET("/users/{uid}/devices/{did}")
+    public Call<Device> getUsersDeviceByid(@Path("uid") int userId, @Path("did") int deviceId);
+
+    @GET("/users/{uid}/devices/{did}/props")
+    public Call<DeviceProperty[]> getUserDeviceProps(@Path("uid") int userId, @Path("did") int deviceId);
 }

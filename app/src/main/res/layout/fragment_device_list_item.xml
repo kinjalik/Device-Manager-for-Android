@@ -15,8 +15,7 @@
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        tools:showIn="@id/devices_recycler_view">
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/device_list__name"
@@ -34,4 +33,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="Device Description, it can be long"/>
     </LinearLayout>
+
+
 </android.support.v7.widget.CardView>

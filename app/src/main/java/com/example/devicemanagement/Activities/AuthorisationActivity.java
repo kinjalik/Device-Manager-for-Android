@@ -1,4 +1,4 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.devicemanagement.Network.Authorisation;
+import com.example.devicemanagement.Callback;
 import com.example.devicemanagement.Entities.User;
+import com.example.devicemanagement.R;
 
 public class AuthorisationActivity extends AppCompatActivity {
     private static final String LOG_TAG = "AUTH_A";
@@ -150,8 +153,6 @@ public class AuthorisationActivity extends AppCompatActivity {
 
             Button registerBtn = findViewById(R.id.s_register__form_submit);
             registerBtn.setOnClickListener(registerButtonListener);
-
-            // ToDo: Register button logic
         } else {
             setContentView(R.layout.login_screen);
 

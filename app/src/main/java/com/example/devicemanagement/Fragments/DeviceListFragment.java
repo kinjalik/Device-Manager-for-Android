@@ -1,11 +1,9 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Fragments;
 
 
-import android.bluetooth.BluetoothClass;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.devicemanagement.DeviceListRecyclerAdapter;
 import com.example.devicemanagement.Entities.Device;
+import com.example.devicemanagement.Network.NetworkService;
+import com.example.devicemanagement.R;
 
 import java.util.Objects;
 
@@ -43,7 +44,7 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (Objects.requireNonNull(getActivity()).findViewById(R.id.item_detail_container) != null) {
+        if (getActivity().findViewById(R.id.device_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -67,7 +68,7 @@ public class DeviceListFragment extends Fragment {
                         Device[] devices = response.body();
                         RecyclerView devicesList = Objects.requireNonNull(getActivity()).findViewById(R.id.devices_recycler_view);
                         devicesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        DeviceRecyclerAdapter deviceAdapter = new DeviceRecyclerAdapter(devices);
+                        DeviceListRecyclerAdapter deviceAdapter = new DeviceListRecyclerAdapter(devices, mTwoPane);
                         devicesList.setAdapter(deviceAdapter);
                     }
 

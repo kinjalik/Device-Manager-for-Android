@@ -1,5 +1,5 @@
 package com.example.devicemanagement;
 
-interface Callback<T> {
+public interface Callback<T> {
     void onResult(T res);
 }

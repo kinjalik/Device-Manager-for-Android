@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName;
 public class Device {
     @SerializedName("id")
     @Expose
-    private int id;
+    public int id;
     @SerializedName("name")
     @Expose
-    private String name;
+    public String name;
     @SerializedName("owner_id")
     @Expose
-    private int ownerId;
+    public int ownerId;
     @SerializedName("description")
     @Expose
-    private String description;
+    public String description;
 
     public int getId() {
         return id;

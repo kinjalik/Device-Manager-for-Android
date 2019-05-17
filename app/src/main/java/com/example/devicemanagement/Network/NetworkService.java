@@ -1,4 +1,4 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Network;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

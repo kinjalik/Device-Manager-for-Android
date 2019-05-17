@@ -1,15 +1,16 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.devicemanagement.Callback;
 import com.example.devicemanagement.Entities.User;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-class Authorisation {
+public class Authorisation {
     private static String LOG_TAG = "AUTH";
 
     // Singleton management START
@@ -17,7 +18,7 @@ class Authorisation {
 
     private static SharedPreferences mSettings;
 
-    static Authorisation getInstance(Context cntx) {
+    public static Authorisation getInstance(Context cntx) {
         Log.i(LOG_TAG, "Authorisation instance called");
         if (instance == null)
             instance = new Authorisation(cntx);
