@@ -1,4 +1,4 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.devicemanagement.Entities.DeviceProperty;
+import com.example.devicemanagement.R;
 
 public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapter.ViewHolder> {
     private final static String LOG_TAG = "PROPERTY_LIST_RECYCLER_ADAPTER";

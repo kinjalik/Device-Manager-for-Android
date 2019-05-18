@@ -33,10 +33,10 @@ public class Authorisation {
 
     // Singleton management END
 
-    private static final String APP_PREFERENCES = "settings";
-    private static final String APP_PREFERENCES_ID = "id";
-    private static final String APP_PREFERENCES_LOGIN = "login";
-    private static final String APP_PREFERENCES_PASSWORD = "password";
+    public static final String APP_PREFERENCES = "settings";
+    public static final String APP_PREFERENCES_ID = "id";
+    public static final String APP_PREFERENCES_LOGIN = "login";
+    public static final String APP_PREFERENCES_PASSWORD = "password";
 
     private final BackendApi api = NetworkService.getInstance().getApi();
 

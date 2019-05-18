@@ -32,8 +32,6 @@ public class InitActivity extends AppCompatActivity {
             public void onResult(Boolean res) {
                     if (res) {
                         Log.i(LOG_TAG, "User authorised, moving to MainActivity"); // ToDo: Add to log next screen
-                        Toast.makeText(getApplicationContext(), "\"You are logged in. Other functions not implemented.\"", Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(R.id.drawer_layout))
                         Intent transit = new Intent(InitActivity.this, MainActivity.class);
                         startActivity(transit);
                     } else {

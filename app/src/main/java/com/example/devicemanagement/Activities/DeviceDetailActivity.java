@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.devicemanagement.DeviceListRecyclerAdapter;
+import com.example.devicemanagement.Adapters.DeviceListRecyclerAdapter;
 import com.example.devicemanagement.Entities.Device;
 import com.example.devicemanagement.Fragments.DeviceDetailFragment;
 import com.example.devicemanagement.Network.BackendApi;

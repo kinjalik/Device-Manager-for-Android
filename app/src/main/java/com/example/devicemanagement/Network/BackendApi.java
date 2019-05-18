@@ -33,4 +33,7 @@ public interface BackendApi {
 
     @GET("/users/{uid}/devices/{did}/props")
     public Call<DeviceProperty[]> getUserDeviceProps(@Path("uid") int userId, @Path("did") int deviceId);
+
+    @POST("/users/{uid}/devices/{did}/props")
+    public Call<DeviceProperty> addUserDeviceProp(@Path("uid") int userId, @Path("did") int deviceId, @Body DeviceProperty dp);
 }

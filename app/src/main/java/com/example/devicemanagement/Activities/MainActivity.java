@@ -3,6 +3,7 @@ package com.example.devicemanagement.Activities;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -18,12 +19,12 @@ import com.example.devicemanagement.Fragments.DeviceListFragment;
 import com.example.devicemanagement.R;
 
 /*
-    IT IS NOT AN ENTY POINT OF AN APP!
+    IT IS NOT AN ENTRY POINT OF AN APP!
     InitActivity IS AN ENTRY POINT!
  */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private String LOG_TAG = "MAIN_A";
+    private static String LOG_TAG = "MAIN_A";
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_layout);
+        Snackbar.make(findViewById(R.id.drawer_layout), "Welcome to Device Manager", Snackbar.LENGTH_SHORT).show();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         assert f != null;
         fm.beginTransaction().replace(R.id.s_main__container, f).commit();
-
+        Log.i(LOG_TAG, "Started.");
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Log.i(LOG_TAG, "Item selected..");
+        Log.i(LOG_TAG, "Changing current screen.");
         Fragment fragment = null;
         Class fragmentClass = null;
 
@@ -89,7 +91,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.s_main__nav_btn__device_list:
                 fragmentClass = DeviceListFragment.class;
+                Log.i(LOG_TAG, "Device List selected.");
                 break;
+            case 325235:
+            default:
+               Log.i(LOG_TAG, "Selected screen doesn't exists.");
         }
 
         try {
@@ -101,7 +107,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        fm.beginTransaction().replace(R.id.s_main__container, fragment).commit();
+        if (fragment != null) {
+            fm.beginTransaction().replace(R.id.s_main__container, fragment).commit();
+        }
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         drawer.closeDrawer(GravityCompat.START);

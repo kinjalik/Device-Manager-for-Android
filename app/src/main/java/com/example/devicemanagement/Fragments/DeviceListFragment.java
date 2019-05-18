@@ -1,8 +1,11 @@
 package com.example.devicemanagement.Fragments;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.devicemanagement.DeviceListRecyclerAdapter;
+import com.example.devicemanagement.Adapters.DeviceListRecyclerAdapter;
+import com.example.devicemanagement.DevicePropertyDialogFragment;
 import com.example.devicemanagement.Entities.Device;
 import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
@@ -52,6 +56,9 @@ public class DeviceListFragment extends Fragment {
             mTwoPane = true;
         }
 
+        FloatingActionButton fab = getActivity().findViewById(R.id.s_devices_list__add_device);
+
+
 
         int userId = Objects.requireNonNull(getActivity())
                 .getSharedPreferences(APP_PREFERENCES, 0)
@@ -81,6 +88,9 @@ public class DeviceListFragment extends Fragment {
                     }
                 });
     }
+
+    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

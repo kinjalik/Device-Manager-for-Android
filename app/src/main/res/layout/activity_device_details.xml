@@ -42,12 +42,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/s_device_props__add_prop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="10dp"
-        app:srcCompat="@android:drawable/stat_notify_chat"
+        app:src="@drawable/ic_add_black_24dp"
         app:layout_anchor="@+id/device_detail_container"
         app:layout_anchorGravity="top|end" />
 

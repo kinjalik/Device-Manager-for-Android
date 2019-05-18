@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="?attr/dialogPreferredPadding">
+
+    <TextView
+        android:id="@+id/d_create_device_prop__title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="PLAIN DIALOG WINDOW"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_marginBottom="?attr/dialogPreferredPadding">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/d_create_device_prop__name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/d_create_device_prop__name" />
+
+    <EditText
+        android:id="@+id/d_create_device_prop__value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/d_create_device_prop__value"/>
+
+
+
+</LinearLayout>

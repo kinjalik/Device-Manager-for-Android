@@ -1,4 +1,4 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.devicemanagement.Activities.DeviceDetailActivity;
 import com.example.devicemanagement.Entities.Device;
+import com.example.devicemanagement.R;
 import com.google.gson.Gson;
 
 public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRecyclerAdapter.ViewHolder> {
