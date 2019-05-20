@@ -10,18 +10,21 @@ import android.widget.Toast;
 
 import com.example.devicemanagement.Network.Authorisation;
 import com.example.devicemanagement.Callback;
+import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
+import com.example.devicemanagement.SharedPreferencesNames;
 
 public class InitActivity extends AppCompatActivity {
 
     private String LOG_TAG = "INIT_A";
 
     private SharedPreferences mSettings;
-    public static final String APP_PREFERENCES = "settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mSettings = getSharedPreferences(SharedPreferencesNames.APP_PREFERENCES, 0);
 
         Log.i(LOG_TAG, "Checking authorisation...");
         Authorisation auth = Authorisation.getInstance(getApplicationContext());
@@ -31,8 +34,12 @@ public class InitActivity extends AppCompatActivity {
             @Override
             public void onResult(Boolean res) {
                     if (res) {
-                        Log.i(LOG_TAG, "User authorised, moving to MainActivity"); // ToDo: Add to log next screen
+                        Log.i(LOG_TAG, "User authorised, moving to MainActivity");
                         Intent transit = new Intent(InitActivity.this, MainActivity.class);
+
+                        String passwd = mSettings.getString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, "");
+                        NetworkService.setPassword(passwd);
+
                         startActivity(transit);
                     } else {
                         Log.i(LOG_TAG, "Verification failed, calling auth screen");

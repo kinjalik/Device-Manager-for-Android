@@ -1,10 +1,8 @@
-package com.example.devicemanagement;
+package com.example.devicemanagement.Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.example.devicemanagement.Entities.DeviceProperty;
+import com.example.devicemanagement.R;
 import com.google.gson.Gson;
 
 public class DevicePropertyDialogFragment extends DialogFragment {
     public static String EDIT_MODE = "edit_mode";
-    public static String DEVICE_PREF = "device";
+    public static String TRANSPORT_PREF = "device_property";
 
     private DeviceProperty dp;
 
@@ -46,7 +44,10 @@ public class DevicePropertyDialogFragment extends DialogFragment {
         if (isEditMode) {
             windowTitle.setText("Edit Device Property");
             // ToDo: Логика редактирования свойств. ПОСЛЕ реализации на сервере.
-            dp = new Gson().fromJson(getArguments().getString(DEVICE_PREF, ""), DeviceProperty.class);
+            dp = new Gson().fromJson(getArguments().getString(TRANSPORT_PREF, ""), DeviceProperty.class);
+
+            formName.setText(dp.name);
+            formValue.setText(dp.value);
         } else {
             windowTitle.setText("Add Device Property");
             dp = new DeviceProperty();
@@ -56,28 +57,46 @@ public class DevicePropertyDialogFragment extends DialogFragment {
         builder.setView(v);
 
         // ToDo: Инкапсюлировать строки в String-ресурсы
-        builder.setPositiveButton("OK", mPosOnClickListener);
-        builder.setNegativeButton("CANCEL", mNegOnClickListener);
+        builder.setPositiveButton("OK", submitOnClickListener);
+        builder.setNegativeButton("CANCEL", cancelOnCLickListener);
+
+        if (isEditMode)
+            builder.setNeutralButton("DELETE IT", deleteOnClickListener);
+
 
         return builder.create();
     }
 
 
-    private DialogInterface.OnClickListener mPosOnClickListener = new DialogInterface.OnClickListener() {
+    private DialogInterface.OnClickListener submitOnClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dp.name = formName.getText().toString();
             dp.value = formValue.getText().toString();
 
-            Gson gson = new Gson();
+            if (!dp.name.equals("") && !dp.value.equals("")){
+                Gson gson = new Gson();
 
-            Bundle bndl = new Bundle();
-            bndl.putString(DEVICE_PREF, gson.toJson(dp));
-            cb.action(bndl);
+                Bundle bndl = new Bundle();
+                bndl.putString(TRANSPORT_PREF, gson.toJson(dp));
+                cb.action(bndl);
+            } else {
+                dp = null;
+                Bundle bndl = new Bundle();
+                bndl.putString(TRANSPORT_PREF, "");
+                cb.action(bndl);
+            }
         }
     };
 
-    private DialogInterface.OnClickListener mNegOnClickListener = new DialogInterface.OnClickListener() {
+    private DialogInterface.OnClickListener deleteOnClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            cb.action(null);
+        }
+    };
+
+    private DialogInterface.OnClickListener cancelOnCLickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();

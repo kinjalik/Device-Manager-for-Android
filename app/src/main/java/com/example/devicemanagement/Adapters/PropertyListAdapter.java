@@ -3,6 +3,7 @@ package com.example.devicemanagement.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,17 @@ import com.example.devicemanagement.Entities.DeviceProperty;
 import com.example.devicemanagement.R;
 
 public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapter.ViewHolder> {
-    private final static String LOG_TAG = "PROPERTY_LIST_RECYCLER_ADAPTER";
+    private final static String LOG_TAG = "PROPS_LIST_ADAPTER";
     private DeviceProperty[] props;
 
     public PropertyListAdapter(DeviceProperty[] propsArr) {
         props = propsArr;
+    }
+
+    private View.OnClickListener changeListener;
+
+    public void setItemOnClickListener(View.OnClickListener l) {
+        changeListener = l;
     }
 
     @NonNull
@@ -29,6 +36,16 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
 
         ViewHolder viewHolder = new ViewHolder(propView);
         return viewHolder;
+    }
+
+    public DeviceProperty getItemById(int pos) {
+        Log.i(LOG_TAG, "Choosen pos: " + pos + "; Current arr len: " + props.length);
+        return props[pos];
+    }
+
+    public void setProps(DeviceProperty[] p) {
+        props = p;
+        notifyDataSetChanged();
     }
 
     @Override

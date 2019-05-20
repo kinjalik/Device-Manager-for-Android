@@ -6,25 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    >
+    tools:openDrawer="start">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activities.MainActivity"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".Activities.MainActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            style="@style/Toolbar"
             tools:text="Device Manager" />
 
 
         <include
             android:id="@+id/s_main__container"
-            layout="@layout/fragment_device_list"/>
+            layout="@layout/fragment_device_list" />
 
 
     </LinearLayout>
@@ -34,9 +35,21 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/main_menu"
         android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
 
 
-        app:headerLayout="@layout/nav_header_main"/>
+        app:menu="@menu/main_menu" >
+
+        <Button
+            android:id="@+id/s_main__logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_gravity="bottom"
+            android:padding="8dp"
+            android:layout_margin="0dp"
+            android:textColor="#fff"
+            style="@style/Button"/>
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

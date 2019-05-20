@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.devicemanagement.Callback;
 import com.example.devicemanagement.Entities.User;
+import com.example.devicemanagement.SharedPreferencesNames;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -27,17 +28,11 @@ public class Authorisation {
     }
 
     private Authorisation(Context cntx) {
-        mSettings = cntx.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        mSettings = cntx.getSharedPreferences(SharedPreferencesNames.APP_PREFERENCES, Context.MODE_PRIVATE);
 
     }
 
     // Singleton management END
-
-    public static final String APP_PREFERENCES = "settings";
-    public static final String APP_PREFERENCES_ID = "id";
-    public static final String APP_PREFERENCES_LOGIN = "login";
-    public static final String APP_PREFERENCES_PASSWORD = "password";
-
     private final BackendApi api = NetworkService.getInstance().getApi();
 
     public void authorise(final String login, final String passwd, final Callback<Boolean> callback) {
@@ -47,9 +42,9 @@ public class Authorisation {
                 if (res != null && res.isHasPermit()) {
                     Log.i(LOG_TAG, "Provided correct credentials. User authorised.");
                     SharedPreferences.Editor editor = mSettings.edit();
-                    editor.putString(APP_PREFERENCES_LOGIN, login);
-                    editor.putString(APP_PREFERENCES_PASSWORD, passwd);
-                    editor.putInt(APP_PREFERENCES_ID, res.getId());
+                    editor.putString(SharedPreferencesNames.APP_PREFERENCES_LOGIN, login);
+                    editor.putString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, passwd);
+                    editor.putInt(SharedPreferencesNames.APP_PREFERENCES_ID, res.getId());
                     editor.apply();
                     callback.onResult(true);
                 } else {
@@ -67,22 +62,24 @@ public class Authorisation {
     public void isAuthorised(final Callback<Boolean> callback) {
         Log.i(LOG_TAG, "Authorisation check started");
 
-        // ToDo: Remove credentials from SharedPreferences if they are wrong
-        if (mSettings.contains(APP_PREFERENCES_LOGIN) && mSettings.contains(APP_PREFERENCES_PASSWORD)) {
+        if (mSettings.contains(SharedPreferencesNames.APP_PREFERENCES_LOGIN) && mSettings.contains(SharedPreferencesNames.APP_PREFERENCES_PASSWORD)) {
             Log.i(LOG_TAG, "Checking credentials in sharedPrefs");
 
-            final String login = mSettings.getString(APP_PREFERENCES_LOGIN, "");
-            final String passwd = mSettings.getString(APP_PREFERENCES_PASSWORD, "");
+            final String login = mSettings.getString(SharedPreferencesNames.APP_PREFERENCES_LOGIN, "");
+            final String passwd = mSettings.getString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, "");
 
 
             final boolean[] isSuccess = new boolean[1];
             getUserWithCreds(login, passwd, new Callback<User>() {
                 @Override
                 public void onResult(User res) {
-                    if (res == null)
+                    if (res == null || !res.isHasPermit()) {
+                        clearCredentials();
                         callback.onResult(false);
-                    else
-                        callback.onResult(res.isHasPermit());
+                    }
+                    else {
+                        callback.onResult(true);
+                    }
                 }
             });
 
@@ -94,13 +91,20 @@ public class Authorisation {
         }
     }
 
+    private void clearCredentials() {
+        SharedPreferences.Editor edit = mSettings.edit();
+        edit.remove(SharedPreferencesNames.APP_PREFERENCES_LOGIN);
+        edit.remove(SharedPreferencesNames.APP_PREFERENCES_ID);
+        edit.remove(SharedPreferencesNames.APP_PREFERENCES_PASSWORD);
+    }
+
     public void register(final User u, final Callback<User> callback) {
         api.registerUser(u).enqueue(new retrofit2.Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                mSettings.edit().putString(APP_PREFERENCES_LOGIN, u.getLogin()).apply();
-                mSettings.edit().putString(APP_PREFERENCES_PASSWORD, u.getPassword()).apply();
-                mSettings.edit().putInt(APP_PREFERENCES_ID, response.body().getId()).apply();
+                mSettings.edit().putString(SharedPreferencesNames.APP_PREFERENCES_LOGIN, u.getLogin()).apply();
+                mSettings.edit().putString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, u.getPassword()).apply();
+                mSettings.edit().putInt(SharedPreferencesNames.APP_PREFERENCES_ID, response.body().getId()).apply();
                 callback.onResult(response.body());
             }
 

@@ -15,13 +15,12 @@ import android.widget.Toast;
 import com.example.devicemanagement.Network.Authorisation;
 import com.example.devicemanagement.Callback;
 import com.example.devicemanagement.Entities.User;
+import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
+import com.example.devicemanagement.SharedPreferencesNames;
 
 public class AuthorisationActivity extends AppCompatActivity {
     private static final String LOG_TAG = "AUTH_A";
-
-    public static final String APP_PREFERENCES = "settings";
-    public static final String APP_PREFERENCES_INITED = "inited";
 
     private Authorisation authorisation ;
     private SharedPreferences mSettings;
@@ -33,7 +32,7 @@ public class AuthorisationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         authorisation = Authorisation.getInstance(this);
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        mSettings = getSharedPreferences(SharedPreferencesNames.APP_PREFERENCES, Context.MODE_PRIVATE);
 
         /*
         If it is first start of app:
@@ -42,12 +41,12 @@ public class AuthorisationActivity extends AppCompatActivity {
         else
         - Display login screen
          */
-        if (mSettings.contains(APP_PREFERENCES_INITED)) {
+        if (mSettings.contains(SharedPreferencesNames.APP_PREFERENCES_INITED)) {
             loginScreen = false;
         } else {
             SharedPreferences.Editor editor = mSettings.edit();
             loginScreen = true;
-            editor.putBoolean(APP_PREFERENCES_INITED, true);
+            editor.putBoolean(SharedPreferencesNames.APP_PREFERENCES_INITED, true);
             editor.apply();
         }
         changeScreen();
@@ -64,7 +63,7 @@ public class AuthorisationActivity extends AppCompatActivity {
             EditText loginField = findViewById(R.id.s_login__form__login);
             EditText passwdField = findViewById(R.id.s_login__form__password);
             String login = loginField.getText().toString();
-            String passwd = passwdField.getText().toString();
+            final String passwd = passwdField.getText().toString();
 
             authorisation.authorise(login, passwd, new Callback<Boolean>() {
                 @Override
@@ -72,6 +71,7 @@ public class AuthorisationActivity extends AppCompatActivity {
                     if (res) {
                         Toast.makeText(AuthorisationActivity.this, "You successfully authorised", Toast.LENGTH_SHORT).show();
                         Intent transit = new Intent(AuthorisationActivity.this, MainActivity.class);
+                        NetworkService.setPassword(passwd);
                         startActivity(transit);
                     } else {
                         Toast.makeText(AuthorisationActivity.this, "Credentials are wrong. Try again.", Toast.LENGTH_SHORT).show();

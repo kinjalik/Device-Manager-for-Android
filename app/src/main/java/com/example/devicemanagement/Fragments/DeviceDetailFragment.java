@@ -3,7 +3,6 @@ package com.example.devicemanagement.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.devicemanagement.DevicePropertyDialogFragment;
 import com.example.devicemanagement.Entities.Device;
 import com.example.devicemanagement.Entities.DeviceProperty;
-import com.example.devicemanagement.Network.Authorisation;
 import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.Adapters.PropertyListAdapter;
 import com.example.devicemanagement.R;
+import com.example.devicemanagement.RecyclerItemClickListener;
 import com.google.gson.Gson;
 
 import java.util.Objects;
@@ -56,6 +54,9 @@ public class DeviceDetailFragment extends Fragment {
         this.device = gson.fromJson(deviceJson, Device.class);
     }
 
+    private RecyclerView propsList;
+    private PropertyListAdapter propAdapter;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -65,20 +66,49 @@ public class DeviceDetailFragment extends Fragment {
 
         FloatingActionButton fab = getActivity().findViewById(R.id.s_device_props__add_prop);
         fab.setOnClickListener(mFabOnClickListener);
-
-        updateList();
-
-    }
-
-    private void updateList() {
         NetworkService.getInstance().getApi().getUserDeviceProps(device.ownerId, device.id)
                 .enqueue(new Callback<DeviceProperty[]>() {
                     @Override
                     public void onResponse(Call<DeviceProperty[]> call, Response<DeviceProperty[]> response) {
-                        RecyclerView propsList = Objects.requireNonNull(getActivity()).findViewById(R.id.device_props_recycler_view);
+                        propsList = Objects.requireNonNull(getActivity()).findViewById(R.id.device_props_recycler_view);
+
                         propsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        PropertyListAdapter propAdapter = new PropertyListAdapter(response.body());
+                        propAdapter = new PropertyListAdapter(response.body());
                         propsList.setAdapter(propAdapter);
+
+                        propsList.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), propsList, new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View v, int pos) {
+                                final DeviceProperty dp = propAdapter.getItemById(pos);
+
+                                Bundle bndl = new Bundle();
+                                bndl.putBoolean(DevicePropertyDialogFragment.EDIT_MODE, true);
+                                bndl.putString(DevicePropertyDialogFragment.TRANSPORT_PREF, new Gson().toJson(dp));
+                                DevicePropertyDialogFragment dialog = new DevicePropertyDialogFragment();
+                                dialog.setArguments(bndl);
+
+                                dialog.setCallback(new DevicePropertyDialogFragment.Callback() {
+                                    @Override
+                                    public void action(Bundle args) {
+                                        if (args == null) {
+                                            Log.i(LOG_TAG, "Sending property for deletion");
+                                            deleteItem(dp);
+                                            return;
+                                        }
+                                        Log.i(LOG_TAG, "Sending property for edition");
+                                        editItem(dp);
+
+
+                                    }
+                                });
+                                dialog.show(getActivity().getSupportFragmentManager(), "DevicePropertyDialogFragment");
+                            }
+
+                            @Override
+                            public void onLongItemClick(View v, int pos) {
+                                onItemClick(v, pos);
+                            }
+                        }));
                     }
 
                     @Override
@@ -86,6 +116,43 @@ public class DeviceDetailFragment extends Fragment {
 
                     }
                 });
+
+    }
+
+    // ToDo: Сделать обновление списка свойств через штатные средства RecyclerView, а не путем полной перерисовки списка
+    private void updateList() {
+        NetworkService.getInstance().getApi().getUserDeviceProps(device.ownerId, device.id)
+                .enqueue(new Callback<DeviceProperty[]>() {
+                    @Override
+                    public void onResponse(Call<DeviceProperty[]> call, Response<DeviceProperty[]> response) {
+                        propAdapter.setProps(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<DeviceProperty[]> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void deleteItem(DeviceProperty dp) {
+        NetworkService.getInstance().getApi().removeUserDeviceProp(device.ownerId, device.id, dp.id).enqueue(new Callback<DeviceProperty>() {
+            @Override
+            public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
+                Toast.makeText(getContext(), "Property successfully deleted.", Toast.LENGTH_SHORT).show();
+                updateList();
+            }
+
+            @Override
+            public void onFailure(Call<DeviceProperty> call, Throwable t) {
+                Toast.makeText(getContext(), "Error while deleting.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void editItem(DeviceProperty dp) {
+        Toast.makeText(getContext(), "Not implemented yet.", Toast.LENGTH_SHORT).show();
+        // ToDo: Запрос на изменение
     }
 
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
@@ -101,7 +168,12 @@ public class DeviceDetailFragment extends Fragment {
                 @Override
                 public void action(Bundle args) {
                     Log.i(LOG_TAG, "Got new device!");
-                    DeviceProperty dp = new Gson().fromJson(args.getString(DevicePropertyDialogFragment.DEVICE_PREF, ""), DeviceProperty.class);
+                    String dpJson = args.getString(DevicePropertyDialogFragment.TRANSPORT_PREF, "");
+                    if (dpJson.equals("")) {
+                        Toast.makeText(getContext(), "All fields must be filled!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    DeviceProperty dp = new Gson().fromJson(dpJson, DeviceProperty.class);
                     Log.i(LOG_TAG, String.format("Property name: %1$s, value: %2$s", dp.name, dp.value));
                     int userId = device.ownerId;
                     int deviceId = device.id;

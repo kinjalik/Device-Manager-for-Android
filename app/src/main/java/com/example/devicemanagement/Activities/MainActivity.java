@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.devicemanagement.Fragments.DeviceListFragment;
 import com.example.devicemanagement.R;
@@ -67,6 +70,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         assert f != null;
         fm.beginTransaction().replace(R.id.s_main__container, f).commit();
+
+        Button b = findViewById(R.id.s_main__logout);
+        b.setOnClickListener(logoutBtn);
+
         Log.i(LOG_TAG, "Started.");
     }
     @Override
@@ -117,6 +124,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    // Logout btn
+    View.OnClickListener logoutBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(MainActivity.this, "LOGOUT", Toast.LENGTH_SHORT).show();
+        }
+    };
+    
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -125,4 +140,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         moveTaskToBack(true);
     }
+    
+    
 }

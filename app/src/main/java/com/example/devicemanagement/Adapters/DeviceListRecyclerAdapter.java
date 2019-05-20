@@ -22,6 +22,10 @@ public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRe
 
     private boolean mTwoPane;
 
+    private View.OnLongClickListener mOnLongClickListener;
+    public void setmOnLongClickListener(View.OnLongClickListener l) {
+        mOnLongClickListener = l;
+    }
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -49,6 +53,15 @@ public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRe
         mTwoPane = twoPane;
     }
 
+    public void setItems(Device[] d) {
+        devices = d;
+        notifyDataSetChanged();
+    }
+
+    public Device getItemByPos(int pos) {
+        return devices[pos];
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -72,6 +85,7 @@ public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRe
 
         viewHolder.itemView.setTag(position);
         viewHolder.itemView.setOnClickListener(mOnClickListener);
+        viewHolder.itemView.setOnLongClickListener(mOnLongClickListener);
 
     }
 

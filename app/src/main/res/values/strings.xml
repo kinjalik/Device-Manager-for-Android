@@ -20,4 +20,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="d_create_device_prop__name">Property name</string>
     <string name="d_create_device_prop__value">Property value</string>
+    <string name="d_create_device__description">Description of Device</string>
+    <string name="d_create_device__name">Name of Device</string>
 </resources>
