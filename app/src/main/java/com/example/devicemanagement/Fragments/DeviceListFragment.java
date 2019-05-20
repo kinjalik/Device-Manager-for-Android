@@ -1,6 +1,7 @@
 package com.example.devicemanagement.Fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -77,7 +78,11 @@ public class DeviceListFragment extends Fragment {
                         Log.i(LOG_TAG, "Device list downloaded");
 
                         devices = response.body();
-                        devicesList = Objects.requireNonNull(getActivity()).findViewById(R.id.devices_recycler_view);
+                        Activity a = getActivity();
+                        if (a == null)
+                            return;
+                        devicesList = a.findViewById(R.id.devices_recycler_view);
+                        a = null;
                         devicesList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         deviceAdapter = new DeviceListRecyclerAdapter(response.body(), mTwoPane);
                         devicesList.setAdapter(deviceAdapter);

@@ -1,5 +1,6 @@
 package com.example.devicemanagement.Fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -70,7 +71,12 @@ public class DeviceDetailFragment extends Fragment {
                 .enqueue(new Callback<DeviceProperty[]>() {
                     @Override
                     public void onResponse(Call<DeviceProperty[]> call, Response<DeviceProperty[]> response) {
-                        propsList = Objects.requireNonNull(getActivity()).findViewById(R.id.device_props_recycler_view);
+                        Activity a = getActivity();
+                        if (a == null) {
+                            return;
+                        }
+                        propsList = a.findViewById(R.id.device_props_recycler_view);
+                        a = null;
 
                         propsList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         propAdapter = new PropertyListAdapter(response.body());
