@@ -38,7 +38,10 @@
         app:layout_constraintBottom_toTopOf="@+id/s_login__form__password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="username"
+        tools:targetApi="o"
+        android:importantForAutofill="yes"/>
 
     <EditText
         android:id="@+id/s_login__form__password"
@@ -51,7 +54,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="password"
+        tools:targetApi="o"
+        android:importantForAutofill="yes" />
 
     <Button
         android:id="@+id/s_login__sign_in"

@@ -16,14 +16,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.devicemanagement.Adapters.DeviceListRecyclerAdapter;
 import com.example.devicemanagement.Entities.Device;
+import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
 import com.example.devicemanagement.SharedPreferencesNames;
 import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -76,17 +80,24 @@ public class DeviceListFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Device[]> call, Response<Device[]> response) {
                         Log.i(LOG_TAG, "Device list downloaded");
-
                         devices = response.body();
-                        Activity a = getActivity();
-                        if (a == null)
-                            return;
-                        devicesList = a.findViewById(R.id.devices_recycler_view);
-                        a = null;
-                        devicesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        deviceAdapter = new DeviceListRecyclerAdapter(response.body(), mTwoPane);
-                        devicesList.setAdapter(deviceAdapter);
-                        deviceAdapter.setmOnLongClickListener(mAdapterOnLongClickListener);
+                        NetworkService.getInstance().getApi().getUserWithId(userId)
+                                .enqueue(new Callback<User>() {
+                                    @Override
+                                    public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
+                                        User u = response.body();
+
+                                        onCreateCallback(devices, u);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<User> call, Throwable t) {
+                                        Toast.makeText(getActivity(), "Something goes wrong...", Toast.LENGTH_SHORT).show();
+                                        Log.i(LOG_TAG, t.getMessage(), t);
+                                    }
+                                });
+
+
 
                     }
 
@@ -98,6 +109,26 @@ public class DeviceListFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void onCreateCallback(Device[] devices, User u) {
+        Activity a = getActivity();
+        if (a == null)
+            return;
+        devicesList = a.findViewById(R.id.devices_recycler_view);
+        a = null;
+        devicesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        deviceAdapter = new DeviceListRecyclerAdapter(devices, mTwoPane);
+        devicesList.setAdapter(deviceAdapter);
+        deviceAdapter.setmOnLongClickListener(mAdapterOnLongClickListener);
+
+
+        TextView nameSurname = getActivity().findViewById(R.id.drawer_name_surname);
+        TextView email = getActivity().findViewById(R.id.drawer_email);
+        if (u != null) {
+            nameSurname.setText(u.getName() + " " + u.getSurname());
+            email.setText(u.getEmail());
+        }
     }
 
     private View.OnLongClickListener mAdapterOnLongClickListener = new View.OnLongClickListener() {

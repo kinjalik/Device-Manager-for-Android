@@ -16,7 +16,7 @@ public interface BackendApi {
     @GET("/users/{login}")
     public Call<User> getUserWithLogin(@Path("login") String login);
 
-    @GET("/users/{login}")
+    @GET("/users/{id}")
     public Call<User> getUserWithId(@Path("id") int login);
 
     @GET("/users/{login}")

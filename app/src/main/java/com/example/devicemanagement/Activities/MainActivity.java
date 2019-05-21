@@ -1,5 +1,6 @@
 package com.example.devicemanagement.Activities;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.devicemanagement.Fragments.DeviceListFragment;
+import com.example.devicemanagement.Fragments.ProfileInfoFragment;
+import com.example.devicemanagement.Network.Authorisation;
 import com.example.devicemanagement.R;
 
 /*
@@ -100,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentClass = DeviceListFragment.class;
                 Log.i(LOG_TAG, "Device List selected.");
                 break;
-            case 325235:
+            case R.id.s_main__nav_btn__profile:
+                fragmentClass = ProfileInfoFragment.class;
+                break;
             default:
                Log.i(LOG_TAG, "Selected screen doesn't exists.");
         }
@@ -128,7 +133,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     View.OnClickListener logoutBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(MainActivity.this, "LOGOUT", Toast.LENGTH_SHORT).show();
+            Snackbar.make(v,"You have succesfully logged out.", Snackbar.LENGTH_SHORT);
+            Authorisation.getInstance(getApplicationContext()).logout();
+            Intent i = new Intent(MainActivity.this, InitActivity.class);
+            startActivity(i);
         }
     };
     

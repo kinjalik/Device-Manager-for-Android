@@ -74,7 +74,7 @@ public class Authorisation {
                 @Override
                 public void onResult(User res) {
                     if (res == null || !res.isHasPermit()) {
-                        clearCredentials();
+                        logout();
                         callback.onResult(false);
                     }
                     else {
@@ -91,12 +91,6 @@ public class Authorisation {
         }
     }
 
-    private void clearCredentials() {
-        SharedPreferences.Editor edit = mSettings.edit();
-        edit.remove(SharedPreferencesNames.APP_PREFERENCES_LOGIN);
-        edit.remove(SharedPreferencesNames.APP_PREFERENCES_ID);
-        edit.remove(SharedPreferencesNames.APP_PREFERENCES_PASSWORD);
-    }
 
     public void register(final User u, final Callback<User> callback) {
         api.registerUser(u).enqueue(new retrofit2.Callback<User>() {
@@ -114,6 +108,16 @@ public class Authorisation {
                 callback.onResult(null);
             }
         });
+    }
+
+
+    public void logout() {
+        Log.i(LOG_TAG, "Clearing the credentials.");
+        SharedPreferences.Editor edit = mSettings.edit();
+        edit.remove(SharedPreferencesNames.APP_PREFERENCES_LOGIN);
+        edit.remove(SharedPreferencesNames.APP_PREFERENCES_ID);
+        edit.remove(SharedPreferencesNames.APP_PREFERENCES_PASSWORD);
+        edit.apply();
     }
 
     /*

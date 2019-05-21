@@ -13,15 +13,16 @@
     android:paddingTop="10dp">
 
     <TextView
+        android:id="@+id/drawer_name_surname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:text="Name Surname"
         style="@style/NavigationHeader.Heading"
-        app:layout_constraintBottom_toTopOf="@+id/textView2" />
+        app:layout_constraintBottom_toTopOf="@+id/drawer_email" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/drawer_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 

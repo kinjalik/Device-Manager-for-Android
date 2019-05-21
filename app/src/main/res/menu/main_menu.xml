@@ -4,5 +4,8 @@
         <item
             android:id="@+id/s_main__nav_btn__device_list"
             android:title="List of devices" />
+        <item
+            android:id="@+id/s_main__nav_btn__profile"
+            android:title="Profile" />
     </group>
 </menu>
