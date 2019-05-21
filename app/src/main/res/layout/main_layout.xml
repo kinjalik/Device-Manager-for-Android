@@ -23,9 +23,10 @@
             tools:text="Device Manager" />
 
 
-        <include
-            android:id="@+id/s_main__container"
-            layout="@layout/fragment_device_list" />
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/s_main__container"/>
 
 
     </LinearLayout>

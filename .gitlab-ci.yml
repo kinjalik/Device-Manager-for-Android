@@ -35,6 +35,7 @@ assembleDebug:
   stage: build
   script:
     - ./gradlew assembleDebug
+    - cp app/build/outputs/* release/
   artifacts:
     paths:
-      - app/build/outputs/
+      - release/

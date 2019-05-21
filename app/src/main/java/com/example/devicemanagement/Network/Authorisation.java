@@ -92,22 +92,44 @@ public class Authorisation {
     }
 
 
-    public void register(final User u, final Callback<User> callback) {
+    public void register(final User u, final Callback<RegisterResult> callback) {
         api.registerUser(u).enqueue(new retrofit2.Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+                if (response.body() == null) {
+                    callback.onResult(new RegisterResult().setIsConnected(true).setIsSuccess(false));
+                    return;
+                }
                 mSettings.edit().putString(SharedPreferencesNames.APP_PREFERENCES_LOGIN, u.getLogin()).apply();
                 mSettings.edit().putString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, u.getPassword()).apply();
                 mSettings.edit().putInt(SharedPreferencesNames.APP_PREFERENCES_ID, response.body().getId()).apply();
-                callback.onResult(response.body());
+                callback.onResult(new RegisterResult().setIsConnected(true).setIsSuccess(true));
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e(LOG_TAG, t.getMessage(), t);
-                callback.onResult(null);
+                callback.onResult(new RegisterResult().setIsConnected(false).setIsSuccess(true));
             }
         });
+    }
+
+    public class RegisterResult {
+        public boolean isSuccess;
+        public boolean isConnected = true;
+        public RegisterResult create() {
+            return this;
+        }
+
+        public RegisterResult setIsSuccess(boolean success) {
+            isSuccess = success;
+            return this;
+        }
+
+        public RegisterResult setIsConnected(boolean status) {
+            isConnected = status;
+            return this;
+        }
     }
 
 

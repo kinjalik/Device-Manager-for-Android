@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
 import com.example.devicemanagement.SharedPreferencesNames;
+
+import javax.xml.transform.Result;
 
 public class AuthorisationActivity extends AppCompatActivity {
     private static final String LOG_TAG = "AUTH_A";
@@ -91,23 +94,33 @@ public class AuthorisationActivity extends AppCompatActivity {
             EditText surnameField = findViewById(R.id.s_register__form_surname);
             EditText passwordField = findViewById(R.id.s_register__form_password);
             EditText rePasswordField = findViewById(R.id.s_register__form_repassword);
-            
-            String login = loginField.getText().toString(); 
+
+            String login = loginField.getText().toString();
             String email = emailField.getText().toString();
             String name = nameField.getText().toString();
             String surname = surnameField.getText().toString();
             String password = passwordField.getText().toString();
             String rePassword = rePasswordField.getText().toString();
             Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            
+
+            String emailPattern = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+
             if (login.isEmpty() && email.isEmpty() && name.isEmpty() && surname.isEmpty() &&
-            password.isEmpty() && rePassword.isEmpty()) {
+                    password.isEmpty() && rePassword.isEmpty()) {
                 vb.vibrate(500);
-                Toast.makeText(AuthorisationActivity.this, "All fields must be filled!", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.auth_root), "All fields must be filled", Snackbar.LENGTH_LONG).show();
+                return;
+            } else if (!email.matches(emailPattern)) {
+                vb.vibrate(500);
+                Snackbar.make(findViewById(R.id.auth_root), "Incorrect email provided!", Snackbar.LENGTH_LONG).show();
                 return;
             } else if (!password.equals(rePassword)) {
                 vb.vibrate(500);
-                Toast.makeText(AuthorisationActivity.this, "Passwords must be identical. ", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.auth_root), "Passwords must be identical", Snackbar.LENGTH_LONG).show();
+                return;
+            } else if (password.length() < 8) {
+                vb.vibrate(500);
+                Snackbar.make(findViewById(R.id.auth_root), "Password must be at least 8 characters long", Snackbar.LENGTH_LONG).show();
                 return;
             }
 
@@ -118,18 +131,24 @@ public class AuthorisationActivity extends AppCompatActivity {
                     .setSurname(name)
                     .setPassword(password);
 
-            // ToDo: Сделать проверку данных на непустоту, а так же на правильность почты, надежность пароля
-
-            authorisation.register(u, new Callback<User>() {
+            authorisation.register(u, new Callback<Authorisation.RegisterResult>() {
                 @Override
-                public void onResult(User res) {
+                public void onResult(Authorisation.RegisterResult res) {
                     if (res == null) {
-                        Toast.makeText(AuthorisationActivity.this, "Something gone wrong...", Toast.LENGTH_SHORT).show();
-                    } else {
+                        Toast.makeText(AuthorisationActivity.this, "Something gone wrong. Please, call the developer!", Toast.LENGTH_SHORT).show();
+                    } else if (res.isSuccess) {
                         Log.i(LOG_TAG, "Registered successfully. Quiting...");
                         Toast.makeText(AuthorisationActivity.this, "Registered succesfully.", Toast.LENGTH_SHORT).show();
                         Intent transit = new Intent(AuthorisationActivity.this, MainActivity.class);
                         startActivity(transit);
+                    } else if (res.isConnected) {
+                        Log.i(LOG_TAG, "Server sent anything missunderstandable. Check!");
+                        Snackbar.make(findViewById(R.id.auth_root), "Account with provided username or password already exists", Snackbar.LENGTH_LONG).show();
+
+                    } else {
+                        Log.i(LOG_TAG, "Server is down!");
+                        Snackbar.make(findViewById(R.id.auth_root), "Please, check your internet connection", Snackbar.LENGTH_LONG).show();
+
                     }
                 }
             });

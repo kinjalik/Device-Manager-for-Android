@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/fab_margin"
-            style="@style/FAButton"
+            android:backgroundTint="@color/colorPrimary"
+            app:borderWidth="0dp"
             android:src="@drawable/add_button_24dp"/>
 
     </FrameLayout>
