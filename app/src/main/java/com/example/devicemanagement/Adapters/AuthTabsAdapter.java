@@ -10,6 +10,7 @@ import com.example.devicemanagement.Fragments.LoginFragment;
 import com.example.devicemanagement.Fragments.RegisterFragment;
 
 public class AuthTabsAdapter extends FragmentPagerAdapter {
+    @SuppressWarnings("FieldCanBeLocal")
     final private int TAB_COUNT = 2;
 
     public AuthTabsAdapter(FragmentManager fm, Context ctx) {

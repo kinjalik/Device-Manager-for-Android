@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+@SuppressWarnings("UnusedReturnValue")
 public class User {
     @SerializedName("id")
     @Expose

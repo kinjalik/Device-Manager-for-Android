@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="username" />
+        android:autofillHints="username"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/s_register__form_email"
@@ -31,7 +32,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="email" />
+        android:autofillHints="email"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/s_register__form_name"
@@ -45,7 +47,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="name" />
+        android:autofillHints="name"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/s_register__form_surname"
@@ -53,13 +56,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="@string/s_login__form__surname"
+        android:hint="@string/s_register__form__surname"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="surname" />
+        android:autofillHints="surname"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/s_register__form_password"
@@ -73,7 +77,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/s_register__form_surname"
-        android:autofillHints="password" />
+        android:autofillHints="password"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/s_register__form_repassword"
@@ -87,7 +92,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/s_register__form_password"
-        android:autofillHints="password" />
+        android:autofillHints="password"
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/s_register__form_submit"

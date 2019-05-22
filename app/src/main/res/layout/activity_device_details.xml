@@ -35,6 +35,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!--suppress AndroidDomInspection -->
+    <!-- Bug in android studio (c) StackOverflow -->
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/device_detail_container"
         android:layout_width="match_parent"

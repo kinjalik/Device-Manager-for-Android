@@ -38,15 +38,13 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-
-
         app:menu="@menu/main_menu" >
 
         <Button
             android:id="@+id/s_main__logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Logout"
+            android:text="@string/s_main__logout_btn"
             android:layout_gravity="bottom"
             android:padding="8dp"
             android:layout_margin="0dp"

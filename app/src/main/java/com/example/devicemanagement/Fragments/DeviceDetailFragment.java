@@ -15,13 +15,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.devicemanagement.Adapters.PropertyListAdapter;
 import com.example.devicemanagement.Entities.Device;
 import com.example.devicemanagement.Entities.DeviceProperty;
 import com.example.devicemanagement.Network.NetworkService;
-import com.example.devicemanagement.Adapters.PropertyListAdapter;
 import com.example.devicemanagement.R;
 import com.example.devicemanagement.RecyclerItemClickListener;
 import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -35,7 +37,6 @@ import retrofit2.Response;
 
 public class DeviceDetailFragment extends Fragment {
     public static String LOG_TAG = "F_DEVICE_DETAIL";
-
     public static String ARGS_DEVICE = "device";
 
     public DeviceDetailFragment() {
@@ -56,6 +57,7 @@ public class DeviceDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        assert getArguments() != null;
         String deviceJson = getArguments().getString(ARGS_DEVICE, "");
         this.device = gson.fromJson(deviceJson, Device.class);
     }
@@ -67,7 +69,7 @@ public class DeviceDetailFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        progressBar = getActivity().findViewById(R.id.loader);
+        progressBar = Objects.requireNonNull(getActivity()).findViewById(R.id.loader);
         TextView description = getActivity().findViewById(R.id.f_device_details__description);
         description.setText(device.getDescription());
 
@@ -76,13 +78,12 @@ public class DeviceDetailFragment extends Fragment {
         NetworkService.getInstance().getApi().getUserDeviceProps(device.ownerId, device.id)
                 .enqueue(new Callback<DeviceProperty[]>() {
                     @Override
-                    public void onResponse(Call<DeviceProperty[]> call, Response<DeviceProperty[]> response) {
+                    public void onResponse(@NotNull Call<DeviceProperty[]> call, @NotNull Response<DeviceProperty[]> response) {
                         Activity a = getActivity();
                         if (a == null) {
                             return;
                         }
                         propsList = a.findViewById(R.id.device_props_recycler_view);
-                        a = null;
 
                         propsList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         propAdapter = new PropertyListAdapter(response.body());
@@ -97,11 +98,11 @@ public class DeviceDetailFragment extends Fragment {
                             public void onItemClick(View v, int pos) {
                                 final DeviceProperty dp = propAdapter.getItemById(pos);
 
-                                Bundle bndl = new Bundle();
-                                bndl.putBoolean(DevicePropertyDialogFragment.EDIT_MODE, true);
-                                bndl.putString(DevicePropertyDialogFragment.TRANSPORT_PREF, new Gson().toJson(dp));
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean(DevicePropertyDialogFragment.EDIT_MODE, true);
+                                bundle.putString(DevicePropertyDialogFragment.TRANSPORT_PREF, new Gson().toJson(dp));
                                 DevicePropertyDialogFragment dialog = new DevicePropertyDialogFragment();
-                                dialog.setArguments(bndl);
+                                dialog.setArguments(bundle);
 
                                 dialog.setCallback(new DevicePropertyDialogFragment.Callback() {
                                     @Override
@@ -129,7 +130,7 @@ public class DeviceDetailFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<DeviceProperty[]> call, Throwable t) {
+                    public void onFailure(@NotNull Call<DeviceProperty[]> call, @NotNull Throwable t) {
 
                     }
                 });
@@ -143,14 +144,14 @@ public class DeviceDetailFragment extends Fragment {
         NetworkService.getInstance().getApi().getUserDeviceProps(device.ownerId, device.id)
                 .enqueue(new Callback<DeviceProperty[]>() {
                     @Override
-                    public void onResponse(Call<DeviceProperty[]> call, Response<DeviceProperty[]> response) {
+                    public void onResponse(@NotNull Call<DeviceProperty[]> call, @NotNull Response<DeviceProperty[]> response) {
                         propAdapter.setProps(response.body());
                         progressBar.setVisibility(View.GONE);
                         propsList.setVisibility(View.VISIBLE);
                     }
 
                     @Override
-                    public void onFailure(Call<DeviceProperty[]> call, Throwable t) {
+                    public void onFailure(@NotNull Call<DeviceProperty[]> call, @NotNull Throwable t) {
 
                     }
                 });
@@ -159,13 +160,13 @@ public class DeviceDetailFragment extends Fragment {
     private void deleteItem(DeviceProperty dp) {
         NetworkService.getInstance().getApi().removeUserDeviceProp(device.ownerId, device.id, dp.id).enqueue(new Callback<DeviceProperty>() {
             @Override
-            public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
+            public void onResponse(@NotNull Call<DeviceProperty> call, @NotNull Response<DeviceProperty> response) {
                 Toast.makeText(getContext(), "Property successfully deleted.", Toast.LENGTH_SHORT).show();
                 updateList();
             }
 
             @Override
-            public void onFailure(Call<DeviceProperty> call, Throwable t) {
+            public void onFailure(@NotNull Call<DeviceProperty> call, @NotNull Throwable t) {
                 Toast.makeText(getContext(), "Error while deleting.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -175,14 +176,14 @@ public class DeviceDetailFragment extends Fragment {
         NetworkService.getInstance().getApi().updateUserDeviceProp(device.getOwnerId(), device.getId(), dp.id, dp)
                 .enqueue(new Callback<DeviceProperty>() {
                     @Override
-                    public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
+                    public void onResponse(@NotNull Call<DeviceProperty> call, @NotNull Response<DeviceProperty> response) {
                         Toast.makeText(getContext(), "Property has been updated", Toast.LENGTH_SHORT).show();
                         updateList();
 
                     }
 
                     @Override
-                    public void onFailure(Call<DeviceProperty> call, Throwable t) {
+                    public void onFailure(@NotNull Call<DeviceProperty> call, @NotNull Throwable t) {
                         Log.i(LOG_TAG, t.getMessage(), t);
                     }
                 });
@@ -212,7 +213,7 @@ public class DeviceDetailFragment extends Fragment {
                     int deviceId = device.id;
                     NetworkService.getInstance().getApi().addUserDeviceProp(userId, deviceId, dp).enqueue(new Callback<DeviceProperty>() {
                         @Override
-                        public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
+                        public void onResponse(@NotNull Call<DeviceProperty> call, @NotNull Response<DeviceProperty> response) {
                             if (response.code() != 200){
                                 Log.i(LOG_TAG, "Device Property sent, but response is incorrect");
                                 Toast.makeText(getContext(), "Failed to create new Property. Try again later.", Toast.LENGTH_SHORT).show();
@@ -225,19 +226,19 @@ public class DeviceDetailFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<DeviceProperty> call, Throwable t) {
+                        public void onFailure(@NotNull Call<DeviceProperty> call, @NotNull Throwable t) {
                             Log.i(LOG_TAG, t.getMessage(), t);
                         }
                     });
 
                 }
             });
-            dialog.show(getActivity().getSupportFragmentManager(), "DevicePropertyDialogFragment");
+            dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "DevicePropertyDialogFragment");
         }
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_device_details, container, false);

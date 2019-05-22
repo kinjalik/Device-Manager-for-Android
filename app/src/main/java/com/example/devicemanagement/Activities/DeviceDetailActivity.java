@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import com.example.devicemanagement.Adapters.DeviceListRecyclerAdapter;
 import com.example.devicemanagement.Entities.Device;
 import com.example.devicemanagement.Fragments.DeviceDetailFragment;
-import com.example.devicemanagement.Network.BackendApi;
-import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
 import com.google.gson.Gson;
 
@@ -21,9 +19,6 @@ import java.util.Objects;
 
 public class DeviceDetailActivity extends AppCompatActivity {
     private static final String LOG_TAG = "DEIVCE_DETAIL_A";
-    private boolean mTwoPane = false;
-    public static final String APP_PREFERENCES = "settings";
-    public static final String APP_PREFERENCES_UID = "id";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,10 +29,9 @@ public class DeviceDetailActivity extends AppCompatActivity {
         String deviceJson = Objects.requireNonNull(getIntent().getExtras()).getString(DeviceListRecyclerAdapter.DEVICE_DATA);
         Gson gson = new Gson();
         Device device = gson.fromJson(deviceJson, Device.class);
-        BackendApi api = NetworkService.getInstance().getApi();
 
         Log.i(LOG_TAG, "Using device info from Intent");
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        final Toolbar toolbar = findViewById(R.id.detail_toolbar);
         toolbar.setTitle(device.getName());
         setSupportActionBar(toolbar);
 

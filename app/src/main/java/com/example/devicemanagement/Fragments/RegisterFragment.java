@@ -9,21 +9,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.devicemanagement.Activities.AuthorisationActivity;
 import com.example.devicemanagement.Activities.MainActivity;
 import com.example.devicemanagement.Callback;
 import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.Network.Authorisation;
 import com.example.devicemanagement.R;
+
+import java.util.Objects;
 
 public class RegisterFragment extends Fragment   {
     public static String LOG_TAG = "F_REGISTER";
@@ -48,7 +46,7 @@ public class RegisterFragment extends Fragment   {
     View.OnClickListener mRegBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            EditText loginField = getActivity().findViewById(R.id.s_register__form_login);
+            EditText loginField = Objects.requireNonNull(getActivity()).findViewById(R.id.s_register__form_login);
             EditText emailField = getActivity().findViewById(R.id.s_register__form_email);
             EditText nameField = getActivity().findViewById(R.id.s_register__form_name);
             EditText surnameField = getActivity().findViewById(R.id.s_register__form_surname);
@@ -63,12 +61,12 @@ public class RegisterFragment extends Fragment   {
             String rePassword = rePasswordField.getText().toString();
             Vibrator vb = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
-            String emailPattern = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+            String emailPattern = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])";
 
             if (login.isEmpty() && email.isEmpty() && name.isEmpty() && surname.isEmpty() &&
                     password.isEmpty() && rePassword.isEmpty()) {
                 vb.vibrate(500);
-                Snackbar.make(getActivity().findViewById(R.id.auth_root), "All fields must be filled", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(R.id.auth_root), "All fields must be filled", Snackbar.LENGTH_LONG).show();
                 return;
             } else if (!email.matches(emailPattern)) {
                 vb.vibrate(500);

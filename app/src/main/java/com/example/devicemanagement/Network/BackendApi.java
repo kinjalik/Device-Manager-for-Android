@@ -15,42 +15,39 @@ import retrofit2.http.Query;
 
 public interface BackendApi {
     @GET("/users/{login}")
-    public Call<User> getUserWithLogin(@Path("login") String login);
+    Call<User> getUserWithLogin(@Path("login") String login);
 
     @GET("/users/{id}")
-    public Call<User> getUserWithId(@Path("id") int login);
+    Call<User> getUserWithId(@Path("id") int login);
 
     @GET("/users/{login}")
-    public Call<User> getUserWithCreds(@Path("login") String login, @Query("password") String password);
+    Call<User> getUserWithCredentials(@Path("login") String login, @Query("password") String password);
 
     @POST("/users")
-    public Call<User> registerUser(@Body User data);
+    Call<User> registerUser(@Body User data);
 
     @GET("/users/{id}/devices")
-    public Call<Device[]> getUsersDevices(@Path("id") int id);
+    Call<Device[]> getUsersDevices(@Path("id") int id);
 
     @POST("/users/{id}/devices")
-    public Call<Device> addUserDevice(@Path("id") int id, @Body Device dev);
+     Call<Device> addUserDevice(@Path("id") int id, @Body Device dev);
 
     @PUT("/users/{uid}/devices/{did}")
-    public Call<DeviceProperty> updateUserDevice(@Path("uid") int userIs, @Path("did") int deviceId, @Body Device dev);
+     Call<DeviceProperty> updateUserDevice(@Path("uid") int userIs, @Path("did") int deviceId, @Body Device dev);
 
 
     @DELETE("/users/{uid}/devices/{did}")
-    public Call<Device> removeUserDevice(@Path("uid") int userId, @Path("did") int deviceId);
-
-    @GET("/users/{uid}/devices/{did}")
-    public Call<Device> getUsersDeviceByid(@Path("uid") int userId, @Path("did") int deviceId);
+     Call<Device> removeUserDevice(@Path("uid") int userId, @Path("did") int deviceId);
 
     @GET("/users/{uid}/devices/{did}/props")
-    public Call<DeviceProperty[]> getUserDeviceProps(@Path("uid") int userId, @Path("did") int deviceId);
+     Call<DeviceProperty[]> getUserDeviceProps(@Path("uid") int userId, @Path("did") int deviceId);
 
     @POST("/users/{uid}/devices/{did}/props")
-    public Call<DeviceProperty> addUserDeviceProp(@Path("uid") int userId, @Path("did") int deviceId, @Body DeviceProperty dp);
+     Call<DeviceProperty> addUserDeviceProp(@Path("uid") int userId, @Path("did") int deviceId, @Body DeviceProperty dp);
 
     @PUT("/users/{uid}/devices/{did}/props/{pid}")
-    public Call<DeviceProperty> updateUserDeviceProp(@Path("uid") int userIs, @Path("did") int deviceId, @Path("pid") int propId, @Body DeviceProperty dp);
+     Call<DeviceProperty> updateUserDeviceProp(@Path("uid") int userIs, @Path("did") int deviceId, @Path("pid") int propId, @Body DeviceProperty dp);
 
     @DELETE("/users/{uid}/devices/{did}/props/{pid}")
-    public Call<DeviceProperty> removeUserDeviceProp(@Path("uid") int userId, @Path("did") int deviceId, @Path("pid") int propId);
+     Call<DeviceProperty> removeUserDeviceProp(@Path("uid") int userId, @Path("did") int deviceId, @Path("pid") int propId);
 }

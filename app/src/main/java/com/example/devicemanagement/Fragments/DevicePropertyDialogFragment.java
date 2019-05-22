@@ -1,5 +1,6 @@
 package com.example.devicemanagement.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -16,6 +17,8 @@ import com.example.devicemanagement.Entities.DeviceProperty;
 import com.example.devicemanagement.R;
 import com.google.gson.Gson;
 
+import java.util.Objects;
+
 public class DevicePropertyDialogFragment extends DialogFragment {
     public static String EDIT_MODE = "edit_mode";
     public static String TRANSPORT_PREF = "device_property";
@@ -29,9 +32,9 @@ public class DevicePropertyDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
 
-        View v = inflater.inflate(R.layout.dialog_create_device_prop, null);
+        @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.dialog_create_device_prop, null);
 
 
         TextView windowTitle = v.findViewById(R.id.d_create_device_prop__title);
@@ -40,27 +43,25 @@ public class DevicePropertyDialogFragment extends DialogFragment {
 
         boolean isEditMode = getArguments() != null && getArguments().getBoolean(EDIT_MODE);
 
-        // ToDo: Инкапсюлировать строки в String-ресурсы
+        String title;
         if (isEditMode) {
-            windowTitle.setText("Edit Device Property");
+            title = getActivity().getString(R.string.d_create_device_prop__title__edit);
             dp = new Gson().fromJson(getArguments().getString(TRANSPORT_PREF, ""), DeviceProperty.class);
 
             formName.setText(dp.name);
             formValue.setText(dp.value);
         } else {
-            windowTitle.setText("Add Device Property");
+            title = getActivity().getString(R.string.d_create_device_prop__title_add);
             dp = new DeviceProperty();
         }
-
+        windowTitle.setText(title);
 
         builder.setView(v);
-
-        // ToDo: Инкапсюлировать строки в String-ресурсы
-        builder.setPositiveButton("OK", submitOnClickListener);
-        builder.setNegativeButton("CANCEL", cancelOnCLickListener);
+        builder.setPositiveButton(getActivity().getString(R.string.d_create_device_prop__button__ok), submitOnClickListener);
+        builder.setNegativeButton(getActivity().getString(R.string.d_create_device_prop__button__cancel), cancelOnCLickListener);
 
         if (isEditMode)
-            builder.setNeutralButton("DELETE IT", deleteOnClickListener);
+            builder.setNeutralButton(getActivity().getString(R.string.d_create_device_prop__button__remove), deleteOnClickListener);
 
 
         return builder.create();
@@ -76,14 +77,14 @@ public class DevicePropertyDialogFragment extends DialogFragment {
             if (!dp.name.equals("") && !dp.value.equals("")){
                 Gson gson = new Gson();
 
-                Bundle bndl = new Bundle();
-                bndl.putString(TRANSPORT_PREF, gson.toJson(dp));
-                cb.action(bndl);
+                Bundle bundle = new Bundle();
+                bundle.putString(TRANSPORT_PREF, gson.toJson(dp));
+                cb.action(bundle);
             } else {
                 dp = null;
-                Bundle bndl = new Bundle();
-                bndl.putString(TRANSPORT_PREF, "");
-                cb.action(bndl);
+                Bundle bundle = new Bundle();
+                bundle.putString(TRANSPORT_PREF, "");
+                cb.action(bundle);
             }
         }
     };
@@ -108,6 +109,6 @@ public class DevicePropertyDialogFragment extends DialogFragment {
     }
 
     public interface Callback {
-        public void action(Bundle args);
+        void action(Bundle args);
     }
 }

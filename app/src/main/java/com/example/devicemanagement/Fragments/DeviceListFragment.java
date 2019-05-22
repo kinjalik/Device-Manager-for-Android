@@ -1,6 +1,7 @@
 package com.example.devicemanagement.Fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
@@ -103,7 +104,7 @@ public class DeviceListFragment extends Fragment {
                                     }
 
                                     @Override
-                                    public void onFailure(@NotNull Call<User> call, Throwable t) {
+                                    public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
                                         Toast.makeText(getActivity(), "Something goes wrong...", Toast.LENGTH_SHORT).show();
                                         Log.i(LOG_TAG, t.getMessage(), t);
                                     }
@@ -114,7 +115,7 @@ public class DeviceListFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<Device[]> call, Throwable t) {
+                    public void onFailure(@NotNull Call<Device[]>  call, @NotNull Throwable t) {
                         Log.i(LOG_TAG, "Failed to download device list", t);
                         Toast.makeText(getActivity(),
                                 "Something got wrong while downloading your devices.",
@@ -123,12 +124,12 @@ public class DeviceListFragment extends Fragment {
                 });
     }
 
+    @SuppressLint("SetTextI18n")
     private void onCreateCallback(Device[] devices, User u) {
         Activity a = getActivity();
         if (a == null)
             return;
         devicesList = a.findViewById(R.id.devices_recycler_view);
-        a = null;
         devicesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         progressBar.setVisibility(View.GONE);
         devicesList.setVisibility(View.VISIBLE);
@@ -148,11 +149,11 @@ public class DeviceListFragment extends Fragment {
     private View.OnLongClickListener mAdapterOnLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            Vibrator vibro = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+            Vibrator vibration = (Vibrator) Objects.requireNonNull(getActivity()).getSystemService(Context.VIBRATOR_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibro.vibrate(VibrationEffect.createOneShot(100L, 50));
+                vibration.vibrate(VibrationEffect.createOneShot(100L, 50));
             } else {
-                vibro.vibrate(100);
+                vibration.vibrate(100);
             }
 
             int pos = (int) v.getTag();
@@ -190,13 +191,13 @@ public class DeviceListFragment extends Fragment {
         NetworkService.getInstance().getApi().removeUserDevice(device.ownerId, device.id)
                 .enqueue(new Callback<Device>() {
                     @Override
-                    public void onResponse(Call<Device> call, Response<Device> response) {
+                    public void onResponse(@NotNull Call<Device> call, @NotNull Response<Device> response) {
                         Toast.makeText(getContext(), "Item deleted succesfully.", Toast.LENGTH_SHORT).show();
                         updateList();
                     }
 
                     @Override
-                    public void onFailure(Call<Device> call, Throwable t) {
+                    public void onFailure(@NotNull Call<Device> call, @NotNull Throwable t) {
 
                     }
                 });
@@ -208,13 +209,13 @@ public class DeviceListFragment extends Fragment {
         NetworkService.getInstance().getApi().updateUserDevice(device.ownerId, device.id, device)
                 .enqueue(new Callback<DeviceProperty>() {
                     @Override
-                    public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
+                    public void onResponse(@NotNull Call<DeviceProperty> call, @NotNull Response<DeviceProperty> response) {
                         Toast.makeText(getContext(), "Device has been updated", Toast.LENGTH_SHORT).show();
                         updateList();
                     }
 
                     @Override
-                    public void onFailure(Call<DeviceProperty> call, Throwable t) {
+                    public void onFailure(@NotNull Call<DeviceProperty> call, @NotNull Throwable t) {
                         Toast.makeText(getContext(), "Something gone wrong", Toast.LENGTH_SHORT).show();
                         Log.i(LOG_TAG, t.getMessage(), t);
                     }
@@ -230,7 +231,7 @@ public class DeviceListFragment extends Fragment {
                 .getUsersDevices(userId)
                 .enqueue(new Callback<Device[]>() {
                     @Override
-                    public void onResponse(Call<Device[]> call, Response<Device[]> response) {
+                    public void onResponse(@NotNull Call<Device[]> call, @NotNull Response<Device[]> response) {
                         Log.i(LOG_TAG, "Device list downloaded");
                         deviceAdapter.setItems(response.body());
 
@@ -239,7 +240,7 @@ public class DeviceListFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<Device[]> call, Throwable t) {
+                    public void onFailure(@NotNull Call<Device[]> call, @NotNull Throwable t) {
                         Log.i(LOG_TAG, "Failed to download device list", t);
                         Toast.makeText(getActivity(),
                                 "Something got wrong while downloading your devices.",
@@ -268,12 +269,12 @@ public class DeviceListFragment extends Fragment {
                         return;
                     }
                     Device dp = new Gson().fromJson(dpJson, Device.class);
-                    int userId = getActivity().getSharedPreferences(SharedPreferencesNames.APP_PREFERENCES, 0).getInt(SharedPreferencesNames.APP_PREFERENCES_ID, 0);
+                    int userId = Objects.requireNonNull(getActivity()).getSharedPreferences(SharedPreferencesNames.APP_PREFERENCES, 0).getInt(SharedPreferencesNames.APP_PREFERENCES_ID, 0);
                     dp.setOwnerId(userId);
                     Log.i(LOG_TAG, String.format("Device name: %1$s, description: %2$s", dp.name, dp.description));
                     NetworkService.getInstance().getApi().addUserDevice(userId, dp).enqueue(new Callback<Device>() {
                         @Override
-                        public void onResponse(Call<Device> call, Response<Device> response) {
+                        public void onResponse(@NotNull Call<Device> call, @NotNull Response<Device> response) {
                             if (response.code() != 200){
                                 Log.i(LOG_TAG, "Device  sent, but response is incorrect");
                                 Toast.makeText(getContext(), "Failed to create new Device Try again later.", Toast.LENGTH_SHORT).show();

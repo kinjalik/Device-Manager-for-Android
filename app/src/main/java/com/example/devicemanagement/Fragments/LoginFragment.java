@@ -11,15 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.devicemanagement.Activities.AuthorisationActivity;
 import com.example.devicemanagement.Activities.MainActivity;
 import com.example.devicemanagement.Callback;
 import com.example.devicemanagement.Network.Authorisation;
-import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
-import com.example.devicemanagement.SharedPreferencesNames;
+
+import java.util.Objects;
 
 public class LoginFragment extends Fragment {
     public static String LOG_TAG = "F_LOGIN";
@@ -44,12 +42,12 @@ public class LoginFragment extends Fragment {
     View.OnClickListener mLoginBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            EditText loginField = getActivity().findViewById(R.id.s_login__form__login);
-            EditText passwdField = getActivity().findViewById(R.id.s_login__form__password);
+            EditText loginField = Objects.requireNonNull(getActivity()).findViewById(R.id.s_login__form__login);
+            EditText passwordField = getActivity().findViewById(R.id.s_login__form__password);
             String login = loginField.getText().toString();
-            final String passwd = passwdField.getText().toString();
+            final String password = passwordField.getText().toString();
 
-            authorisation.authorise(login, passwd, new Callback<Boolean>() {
+            authorisation.authorise(login, password, new Callback<Boolean>() {
                 @Override
                 public void onResult(Boolean res) {
                     if (res) {

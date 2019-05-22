@@ -143,7 +143,7 @@ public class Authorisation {
     Assisting functions
      */
     private void getUserWithCreds(String login, String passwd, final Callback<User> callback) {
-        api.getUserWithCreds(login, passwd).enqueue(new retrofit2.Callback<User>() {
+        api.getUserWithCredentials(login, passwd).enqueue(new retrofit2.Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User u = response.body();

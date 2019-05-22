@@ -1,5 +1,6 @@
 package com.example.devicemanagement.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,9 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.devicemanagement.Entities.Device;
-import com.example.devicemanagement.Entities.DeviceProperty;
 import com.example.devicemanagement.R;
 import com.google.gson.Gson;
+
+import java.util.Objects;
 
 public class DeviceDialogFragment extends DialogFragment {
     public static String EDIT_MODE = "edit_mode";
@@ -30,8 +32,9 @@ public class DeviceDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
 
+        @SuppressLint("InflateParams")
         View v = inflater.inflate(R.layout.dialog_create_device, null);
 
 
@@ -41,28 +44,27 @@ public class DeviceDialogFragment extends DialogFragment {
 
         boolean isEditMode = getArguments() != null && getArguments().getBoolean(EDIT_MODE);
 
-        // ToDo: Инкапсюлировать строки в String-ресурсы
+        String title;
         if (isEditMode) {
-            windowTitle.setText("Edit Device");
+            title = getActivity().getString(R.string.d_create_device__title__edit);
             dp = new Gson().fromJson(getArguments().getString(TRANSPORT_PREF, ""), Device.class);
-            windowTitle.setText("Edit Device Property");
 
             formName.setText(dp.name);
             formDescription.setText(dp.description);
         } else {
-            windowTitle.setText("Add new Device");
+            title = getActivity().getString(R.string.d_create_device__title_add);
             dp = new Device();
         }
+        windowTitle.setText(title);
 
 
         builder.setView(v);
 
-        // ToDo: Инкапсюлировать строки в String-ресурсы
-        builder.setPositiveButton("OK", mPosOnClickListener);
-        builder.setNegativeButton("CANCEL", mNegOnClickListener);
+        builder.setPositiveButton(getActivity().getString(R.string.d_create_device__button__ok), mPosOnClickListener);
+        builder.setNegativeButton(getActivity().getString(R.string.d_create_device__button__cancel), mNegOnClickListener);
 
         if (isEditMode)
-            builder.setNeutralButton("DELETE IT", deleteOnClickListener);
+            builder.setNeutralButton(getActivity().getString(R.string.d_create_device__button__remove), deleteOnClickListener);
 
         return builder.create();
     }
@@ -109,6 +111,6 @@ public class DeviceDialogFragment extends DialogFragment {
     }
 
     public interface Callback {
-        public void action(Bundle args);
+        void action(Bundle args);
     }
 }

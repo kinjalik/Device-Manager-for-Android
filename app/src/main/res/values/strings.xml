@@ -1,25 +1,54 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Device Management</string>
-    <string name="s_login__form__login">Type your login here</string>
+    <!-- Login screen -->
     <string name="s_login__welcome">Sign in to get an access</string>
+    <string name="s_login__form__login">Type your login here</string>
     <string name="s_login__form__password">Type your password here</string>
     <string name="s_login__form__submit">Sign in</string>
-    <string name="s_login__change_screen">Not registered yet? Sign up!</string>
-    <string name="s_register__change_screen">Already registered? Log in!</string>
+
+    <!-- Register screen -->
     <string name="s_register__form__login">Your Login</string>
     <string name="s_register__form__mail">Your E-Mail</string>
     <string name="s_register__form__name">Your Name</string>
+    <string name="s_register__form__surname">Your Surname</string>
     <string name="s_register__form__password">Your Password</string>
     <string name="s_register__form__re_password">Password (again)</string>
     <string name="s_register__form__submit">Register</string>
-    <string name="s_login__form__surname">Your Surname</string>
 
+    <!-- Drawer annotations -->
     <string name="nav_drawer_open">Open navigation bar</string>
     <string name="nav_drawer_close">Close navigation bar</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="d_create_device_prop__name">Property name</string>
-    <string name="d_create_device_prop__value">Property value</string>
+    <!-- Device Window -->
+    <string name="d_create_device__title_add">Add Device</string>
+    <string name="d_create_device__title__edit">Edit Device</string>
+    <string name="d_create_device__button__ok">OK</string>
+    <string name="d_create_device__button__cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="d_create_device__button__remove">REMOVE IT</string>
+
+    <!-- Device Creation-->
     <string name="d_create_device__description">Description of Device</string>
     <string name="d_create_device__name">Name of Device</string>
+
+    <!-- Device Property Window-->
+    <string name="d_create_device_prop__title_add">Add Device Property</string>
+    <string name="d_create_device_prop__title__edit">Edit Device Property</string>
+
+    <!-- Device Property Creation-->
+    <string name="d_create_device_prop__name">Property name</string>
+    <string name="d_create_device_prop__value">Property value</string>
+    <string name="d_create_device_prop__button__ok">OK</string>
+    <string name="d_create_device_prop__button__cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="d_create_device_prop__button__remove">DELETE IT</string>
+
+    <!-- Profile Information Screen -->
+    <string name="s_profile_info__name_surname">Your name and surname</string>
+    <string name="s_profile_info__email">Your E-Mail</string>
+    <string name="s_profile_info__login">Your login</string>
+    <string name="s_profile_info__reg_date">Date of your registration</string>
+
+    <!-- ETCs -->
+    <string name="s_main__logout_btn">Logout</string>
+    <string name="drawer__image_description">Surrealistical Art</string>
+
 </resources>

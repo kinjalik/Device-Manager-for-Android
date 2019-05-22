@@ -70,8 +70,7 @@ public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRe
 
         View deviceView = inflater.inflate(R.layout.fragment_device_list_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(deviceView);
-        return viewHolder;
+        return new ViewHolder(deviceView);
     }
 
     @Override
@@ -95,12 +94,12 @@ public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRe
             return 0;
         return devices.length;
     }
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private TextView deviceName;
         private TextView deviceDescription;
 
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             deviceName = itemView.findViewById(R.id.device_list__name);
             deviceDescription = itemView.findViewById(R.id.device_list__description);

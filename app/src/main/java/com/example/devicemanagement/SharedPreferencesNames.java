@@ -8,6 +8,6 @@ public class SharedPreferencesNames {
     public static final String APP_PREFERENCES_ID = "id";
     public static final String APP_PREFERENCES_LOGIN = "login";
     public static final String APP_PREFERENCES_PASSWORD = "password";
-    public static final String APP_PREFERENCES_INITED = "inited";
+    public static final String APP_PREFERENCES_INITIALIZED = "initialized";
 
 }

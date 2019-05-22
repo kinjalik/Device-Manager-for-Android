@@ -2,6 +2,7 @@ package com.example.devicemanagement.Activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -11,13 +12,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.Fragments.DeviceListFragment;
@@ -28,7 +27,7 @@ import com.example.devicemanagement.R;
 import com.example.devicemanagement.SharedPreferencesNames;
 import com.google.gson.Gson;
 
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NetworkService.getInstance().getApi().getUserWithId(userId)
                 .enqueue(new Callback<User>() {
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
+                    public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                         Log.i(LOG_TAG, new Gson().toJson(response.body()));
                         bundle.putString(ARG_USER, new Gson().toJson(response.body()));
                         try {
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+                    public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
 
                     }
                 });

@@ -1,9 +1,9 @@
 package com.example.devicemanagement.Fragments;
 
-import android.support.v4.app.Fragment;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +15,20 @@ import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.R;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 
 public class ProfileInfoFragment extends Fragment {
     public static String LOG_TAG = "F_PROFILE_INFO";
-    private static User mUser;
 
     public ProfileInfoFragment() {
         // Required empty public constructor
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile_info, container, false);
@@ -38,11 +40,12 @@ public class ProfileInfoFragment extends Fragment {
         if (getArguments() != null) {
             String json = getArguments().getString(MainActivity.ARG_USER, "");
             Log.i(LOG_TAG, "Json: " + json);
-            mUser = new Gson().fromJson(json, User.class);
+            User mUser = new Gson().fromJson(json, User.class);
             loginField.setText(mUser.getLogin());
             nameSurnameField.setText(mUser.getName() + " " + mUser.getSurname());
             emailField.setText(mUser.getEmail());
 
+            @SuppressLint("SimpleDateFormat")
             SimpleDateFormat sdf = new SimpleDateFormat();
             dateOfRegField.setText(sdf.format(mUser.getRegDate()));
 

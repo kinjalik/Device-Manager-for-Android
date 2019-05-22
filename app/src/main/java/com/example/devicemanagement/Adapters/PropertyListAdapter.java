@@ -20,12 +20,6 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
         props = propsArr;
     }
 
-    private View.OnClickListener changeListener;
-
-    public void setItemOnClickListener(View.OnClickListener l) {
-        changeListener = l;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,8 +28,7 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
 
         View propView = inflater.inflate(R.layout.fragment_props_list_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(propView);
-        return viewHolder;
+        return new ViewHolder(propView);
     }
 
     public DeviceProperty getItemById(int pos) {
@@ -67,11 +60,11 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
         return props.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView propName;
-        public TextView propValue;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView propName;
+        TextView propValue;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             propName = itemView.findViewById(R.id.s_device_props__prop_name);
             propValue = itemView.findViewById(R.id.s_device_props__prop_value);

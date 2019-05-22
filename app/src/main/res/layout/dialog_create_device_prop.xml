@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="?attr/dialogPreferredPadding">
 
@@ -10,7 +10,6 @@
         android:id="@+id/d_create_device_prop__title"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:text="PLAIN DIALOG WINDOW"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:layout_marginBottom="?attr/dialogPreferredPadding">
 
@@ -20,13 +19,17 @@
         android:id="@+id/d_create_device_prop__name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/d_create_device_prop__name" />
+        android:hint="@string/d_create_device_prop__name"
+        android:importantForAutofill="no"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/d_create_device_prop__value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/d_create_device_prop__value"/>
+        android:hint="@string/d_create_device_prop__value"
+        android:importantForAutofill="no"
+        tools:targetApi="o" />
 
 
 
