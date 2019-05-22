@@ -38,4 +38,4 @@ assembleDebug:
     - cp app/build/outputs/* release/
   artifacts:
     paths:
-      - release/
+      - app/build/outputs/
