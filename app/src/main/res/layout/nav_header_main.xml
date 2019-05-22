@@ -6,15 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:layout_gravity="bottom|end"
-    android:background="@drawable/ic_launcher_background"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp">
+>
+
+    <ImageView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:srcCompat="@drawable/splash_bg"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/drawer_name_surname"
         android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:text="Name Surname"
@@ -22,6 +26,9 @@
         app:layout_constraintBottom_toTopOf="@+id/drawer_email" />
 
     <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_goneMarginBottom="10dp"
         android:id="@+id/drawer_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
