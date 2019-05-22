@@ -1,8 +1,11 @@
 package com.example.devicemanagement.Network;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+
+import com.example.devicemanagement.SharedPreferencesNames;
 
 import java.io.IOException;
 
@@ -19,10 +22,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
     private static NetworkService mInstance;
-    private static String password;
+    private static SharedPreferences sharedPreferences;
 
-    public static void setPassword(String s) {
-        password = s;
+    public static void setSharedPreferences(SharedPreferences s) {
+        sharedPreferences = s;
     }
 
     private static final String BASE_URL = "https://techno-park-backend.herokuapp.com/";
@@ -44,6 +47,8 @@ public class NetworkService {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
+
+                String password = sharedPreferences.getString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, "");
 
                 if (password != null && !password.equals("")) {
                     HttpUrl url = original.url().newBuilder().addQueryParameter("password", password).build();

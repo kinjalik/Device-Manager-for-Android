@@ -19,10 +19,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.Fragments.DeviceListFragment;
 import com.example.devicemanagement.Fragments.ProfileInfoFragment;
 import com.example.devicemanagement.Network.Authorisation;
+import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
+import com.example.devicemanagement.SharedPreferencesNames;
+import com.google.gson.Gson;
+
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /*
     IT IS NOT AN ENTRY POINT OF AN APP!
@@ -31,6 +41,7 @@ import com.example.devicemanagement.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static String LOG_TAG = "MAIN_A";
+    public static String ARG_USER = "user";
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -91,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fm;
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull final MenuItem menuItem) {
         Log.i(LOG_TAG, "Changing current screen.");
-        Fragment fragment = null;
+        final Fragment[] fragment = {null};
         Class fragmentClass = null;
 
         int id = menuItem.getItemId();
@@ -110,21 +121,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                Log.i(LOG_TAG, "Selected screen doesn't exists.");
         }
 
-        try {
-            if (fragmentClass != null) {
-                fragment = (Fragment) fragmentClass.newInstance();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        final Bundle bundle = new Bundle();
+        int userId = getSharedPreferences(SharedPreferencesNames.APP_PREFERENCES, 0).getInt(SharedPreferencesNames.APP_PREFERENCES_ID, 0);
+        final Class finalFragmentClass = fragmentClass;
+        NetworkService.getInstance().getApi().getUserWithId(userId)
+                .enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        Log.i(LOG_TAG, new Gson().toJson(response.body()));
+                        bundle.putString(ARG_USER, new Gson().toJson(response.body()));
+                        try {
+                            if (finalFragmentClass != null) {
+                                fragment[0] = (Fragment) finalFragmentClass.newInstance();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
 
-        if (fragment != null) {
-            fm.beginTransaction().replace(R.id.s_main__container, fragment).commit();
-        }
-        menuItem.setChecked(true);
-        setTitle(menuItem.getTitle());
-        drawer.closeDrawer(GravityCompat.START);
+                        if (fragment[0] != null) {
+                            fragment[0].setArguments(bundle);
+                            fm.beginTransaction().replace(R.id.s_main__container, fragment[0]).commit();
+                        }
+                        menuItem.setChecked(true);
+                        setTitle(menuItem.getTitle());
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+
+                    }
+                });
+
 
         return true;
     }

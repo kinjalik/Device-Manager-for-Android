@@ -101,8 +101,9 @@ public class DeviceDetailFragment extends Fragment {
                                             deleteItem(dp);
                                             return;
                                         }
+                                        DeviceProperty ndp = new Gson().fromJson(args.getString(DevicePropertyDialogFragment.TRANSPORT_PREF, ""), DeviceProperty.class);
                                         Log.i(LOG_TAG, "Sending property for edition");
-                                        editItem(dp);
+                                        editItem(ndp);
 
 
                                     }
@@ -142,6 +143,7 @@ public class DeviceDetailFragment extends Fragment {
     }
 
     private void deleteItem(DeviceProperty dp) {
+        // ToDo: Повесть лоадер на время запроса
         NetworkService.getInstance().getApi().removeUserDeviceProp(device.ownerId, device.id, dp.id).enqueue(new Callback<DeviceProperty>() {
             @Override
             public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
@@ -157,8 +159,21 @@ public class DeviceDetailFragment extends Fragment {
     }
 
     private void editItem(DeviceProperty dp) {
-        Toast.makeText(getContext(), "Not implemented yet.", Toast.LENGTH_SHORT).show();
-        // ToDo: Запрос на изменение
+        // ToDo Повесить лоадер на время запроса
+        NetworkService.getInstance().getApi().updateUserDeviceProp(device.getOwnerId(), device.getId(), dp.id, dp)
+                .enqueue(new Callback<DeviceProperty>() {
+                    @Override
+                    public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
+                        Toast.makeText(getContext(), "Property has been updated", Toast.LENGTH_SHORT).show();
+                        updateList();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<DeviceProperty> call, Throwable t) {
+                        Log.i(LOG_TAG, t.getMessage(), t);
+                    }
+                });
     }
 
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {

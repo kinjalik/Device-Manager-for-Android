@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -31,6 +32,10 @@ public interface BackendApi {
     @POST("/users/{id}/devices")
     public Call<Device> addUserDevice(@Path("id") int id, @Body Device dev);
 
+    @PUT("/users/{uid}/devices/{did}")
+    public Call<DeviceProperty> updateUserDevice(@Path("uid") int userIs, @Path("did") int deviceId, @Body Device dev);
+
+
     @DELETE("/users/{uid}/devices/{did}")
     public Call<Device> removeUserDevice(@Path("uid") int userId, @Path("did") int deviceId);
 
@@ -42,6 +47,9 @@ public interface BackendApi {
 
     @POST("/users/{uid}/devices/{did}/props")
     public Call<DeviceProperty> addUserDeviceProp(@Path("uid") int userId, @Path("did") int deviceId, @Body DeviceProperty dp);
+
+    @PUT("/users/{uid}/devices/{did}/props/{pid}")
+    public Call<DeviceProperty> updateUserDeviceProp(@Path("uid") int userIs, @Path("did") int deviceId, @Path("pid") int propId, @Body DeviceProperty dp);
 
     @DELETE("/users/{uid}/devices/{did}/props/{pid}")
     public Call<DeviceProperty> removeUserDeviceProp(@Path("uid") int userId, @Path("did") int deviceId, @Path("pid") int propId);

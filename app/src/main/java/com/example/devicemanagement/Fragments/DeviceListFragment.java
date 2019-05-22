@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.devicemanagement.Adapters.DeviceListRecyclerAdapter;
 import com.example.devicemanagement.Entities.Device;
+import com.example.devicemanagement.Entities.DeviceProperty;
 import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.Network.NetworkService;
 import com.example.devicemanagement.R;
@@ -159,8 +160,10 @@ public class DeviceListFragment extends Fragment {
                         deleteItem(device);
                         return;
                     }
+                    Device dev = new Gson().fromJson(args.getString(DeviceDialogFragment.TRANSPORT_PREF, ""), Device.class);
+
                     Log.i(LOG_TAG, "Sending property for edition");
-                    editItem(device);
+                    editItem(dev);
 
 
                 }
@@ -188,7 +191,20 @@ public class DeviceListFragment extends Fragment {
 
     private void editItem(Device device) {
         Toast.makeText(getContext(), "Not implemented yet.", Toast.LENGTH_SHORT).show();
-        // ToDo: Реализовать изменение. После сервера
+        NetworkService.getInstance().getApi().updateUserDevice(device.ownerId, device.id, device)
+                .enqueue(new Callback<DeviceProperty>() {
+                    @Override
+                    public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
+                        Toast.makeText(getContext(), "Device has been updated", Toast.LENGTH_SHORT).show();
+                        updateList();
+                    }
+
+                    @Override
+                    public void onFailure(Call<DeviceProperty> call, Throwable t) {
+                        Toast.makeText(getContext(), "Something gone wrong", Toast.LENGTH_SHORT).show();
+                        Log.i(LOG_TAG, t.getMessage(), t);
+                    }
+                });
     }
 
     private void updateList() {

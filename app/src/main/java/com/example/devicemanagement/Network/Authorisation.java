@@ -65,12 +65,9 @@ public class Authorisation {
         if (mSettings.contains(SharedPreferencesNames.APP_PREFERENCES_LOGIN) && mSettings.contains(SharedPreferencesNames.APP_PREFERENCES_PASSWORD)) {
             Log.i(LOG_TAG, "Checking credentials in sharedPrefs");
 
-            final String login = mSettings.getString(SharedPreferencesNames.APP_PREFERENCES_LOGIN, "");
-            final String passwd = mSettings.getString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, "");
-
-
+            String login = mSettings.getString(SharedPreferencesNames.APP_PREFERENCES_LOGIN, "");
             final boolean[] isSuccess = new boolean[1];
-            getUserWithCreds(login, passwd, new Callback<User>() {
+            getUserWithCreds(login, new Callback<User>() {
                 @Override
                 public void onResult(User res) {
                     if (res == null || !res.isHasPermit()) {
@@ -147,6 +144,21 @@ public class Authorisation {
      */
     private void getUserWithCreds(String login, String passwd, final Callback<User> callback) {
         api.getUserWithCreds(login, passwd).enqueue(new retrofit2.Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                User u = response.body();
+                callback.onResult(u);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(LOG_TAG, t.getMessage(), t);
+                callback.onResult(null);
+            }
+        });
+    }
+    private void getUserWithCreds(String login, final Callback<User> callback) {
+        api.getUserWithLogin(login).enqueue(new retrofit2.Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User u = response.body();

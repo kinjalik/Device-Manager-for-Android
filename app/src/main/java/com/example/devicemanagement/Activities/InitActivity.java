@@ -25,6 +25,7 @@ public class InitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mSettings = getSharedPreferences(SharedPreferencesNames.APP_PREFERENCES, 0);
+        NetworkService.setSharedPreferences(mSettings);
 
         Log.i(LOG_TAG, "Checking authorisation...");
         Authorisation auth = Authorisation.getInstance(getApplicationContext());
@@ -38,7 +39,6 @@ public class InitActivity extends AppCompatActivity {
                         Intent transit = new Intent(InitActivity.this, MainActivity.class);
 
                         String passwd = mSettings.getString(SharedPreferencesNames.APP_PREFERENCES_PASSWORD, "");
-                        NetworkService.setPassword(passwd);
 
                         startActivity(transit);
                     } else {
