@@ -44,10 +44,8 @@ public class DeviceDialogFragment extends DialogFragment {
         // ToDo: Инкапсюлировать строки в String-ресурсы
         if (isEditMode) {
             windowTitle.setText("Edit Device");
-            // ToDo: Логика редактирования свойств. ПОСЛЕ реализации на сервере.
             dp = new Gson().fromJson(getArguments().getString(TRANSPORT_PREF, ""), Device.class);
             windowTitle.setText("Edit Device Property");
-            // ToDo: Логика редактирования свойств. ПОСЛЕ реализации на сервере.
 
             formName.setText(dp.name);
             formDescription.setText(dp.description);

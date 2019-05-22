@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,10 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+/*
+    ToDo: Диалог с лоадером на запрос удалентя и/или редактирования
+ */
 
 public class DeviceDetailFragment extends Fragment {
     public static String LOG_TAG = "F_DEVICE_DETAIL";
@@ -57,11 +62,12 @@ public class DeviceDetailFragment extends Fragment {
 
     private RecyclerView propsList;
     private PropertyListAdapter propAdapter;
-
+    private ProgressBar progressBar;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        progressBar = getActivity().findViewById(R.id.loader);
         TextView description = getActivity().findViewById(R.id.f_device_details__description);
         description.setText(device.getDescription());
 
@@ -81,6 +87,10 @@ public class DeviceDetailFragment extends Fragment {
                         propsList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         propAdapter = new PropertyListAdapter(response.body());
                         propsList.setAdapter(propAdapter);
+
+
+                        progressBar.setVisibility(View.GONE);
+                        propsList.setVisibility(View.VISIBLE);
 
                         propsList.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), propsList, new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
@@ -126,13 +136,17 @@ public class DeviceDetailFragment extends Fragment {
 
     }
 
-    // ToDo: Сделать обновление списка свойств через штатные средства RecyclerView, а не путем полной перерисовки списка
     private void updateList() {
+
+        progressBar.setVisibility(View.VISIBLE);
+        propsList.setVisibility(View.INVISIBLE);
         NetworkService.getInstance().getApi().getUserDeviceProps(device.ownerId, device.id)
                 .enqueue(new Callback<DeviceProperty[]>() {
                     @Override
                     public void onResponse(Call<DeviceProperty[]> call, Response<DeviceProperty[]> response) {
                         propAdapter.setProps(response.body());
+                        progressBar.setVisibility(View.GONE);
+                        propsList.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -143,7 +157,6 @@ public class DeviceDetailFragment extends Fragment {
     }
 
     private void deleteItem(DeviceProperty dp) {
-        // ToDo: Повесть лоадер на время запроса
         NetworkService.getInstance().getApi().removeUserDeviceProp(device.ownerId, device.id, dp.id).enqueue(new Callback<DeviceProperty>() {
             @Override
             public void onResponse(Call<DeviceProperty> call, Response<DeviceProperty> response) {
@@ -159,7 +172,6 @@ public class DeviceDetailFragment extends Fragment {
     }
 
     private void editItem(DeviceProperty dp) {
-        // ToDo Повесить лоадер на время запроса
         NetworkService.getInstance().getApi().updateUserDeviceProp(device.getOwnerId(), device.getId(), dp.id, dp)
                 .enqueue(new Callback<DeviceProperty>() {
                     @Override

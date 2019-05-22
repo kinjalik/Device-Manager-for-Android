@@ -17,7 +17,14 @@
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Very very very long long and long description with a log of epythets."/>
 
+    <ProgressBar
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/loader"/>
+
     <android.support.v7.widget.RecyclerView
+        android:visibility="invisible"
         android:id="@+id/device_props_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

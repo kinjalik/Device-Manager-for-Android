@@ -36,9 +36,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
             app:borderWidth="0dp"
-            android:src="@drawable/add_button_24dp"/>
+            app:srcCompat="@drawable/add_button_24dp"/>
 
     </FrameLayout>
 

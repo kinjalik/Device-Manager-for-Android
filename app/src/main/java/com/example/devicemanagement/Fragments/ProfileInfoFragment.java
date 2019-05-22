@@ -33,6 +33,7 @@ public class ProfileInfoFragment extends Fragment {
         TextView loginField = v.findViewById(R.id.s_profile_info__login);
         TextView nameSurnameField = v.findViewById(R.id.s_profile_info__name_surname);
         TextView dateOfRegField = v.findViewById(R.id.s_profile_info__date_of_reg);
+        TextView emailField = v.findViewById(R.id.s_profile_info__email);
 
         if (getArguments() != null) {
             String json = getArguments().getString(MainActivity.ARG_USER, "");
@@ -40,6 +41,7 @@ public class ProfileInfoFragment extends Fragment {
             mUser = new Gson().fromJson(json, User.class);
             loginField.setText(mUser.getLogin());
             nameSurnameField.setText(mUser.getName() + " " + mUser.getSurname());
+            emailField.setText(mUser.getEmail());
 
             SimpleDateFormat sdf = new SimpleDateFormat();
             dateOfRegField.setText(sdf.format(mUser.getRegDate()));

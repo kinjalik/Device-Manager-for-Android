@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,17 +55,27 @@ public class DeviceListFragment extends Fragment {
 
     private RecyclerView devicesList;
     private DeviceListRecyclerAdapter deviceAdapter;
+    private ProgressBar progressBar;
+
+/*
+    ToDo: Диалог с лоадером на запрос удалентя и/или редактирования
+    ToDo: Двухэкранный планшетный режим
+ */
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getActivity().findViewById(R.id.device_detail_container) != null) {
+        if (Objects.requireNonNull(getActivity()).findViewById(R.id.device_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        mTwoPane = false;
+
+        progressBar = getActivity().findViewById(R.id.loader);
 
         FloatingActionButton fab = getActivity().findViewById(R.id.s_devices_list__add_device);
         fab.setOnClickListener(mFabOnClickListener);
@@ -79,7 +90,7 @@ public class DeviceListFragment extends Fragment {
                 .getUsersDevices(userId)
                 .enqueue(new Callback<Device[]>() {
                     @Override
-                    public void onResponse(Call<Device[]> call, Response<Device[]> response) {
+                    public void onResponse(@NotNull Call<Device[]> call, @NotNull Response<Device[]> response) {
                         Log.i(LOG_TAG, "Device list downloaded");
                         devices = response.body();
                         NetworkService.getInstance().getApi().getUserWithId(userId)
@@ -92,7 +103,7 @@ public class DeviceListFragment extends Fragment {
                                     }
 
                                     @Override
-                                    public void onFailure(Call<User> call, Throwable t) {
+                                    public void onFailure(@NotNull Call<User> call, Throwable t) {
                                         Toast.makeText(getActivity(), "Something goes wrong...", Toast.LENGTH_SHORT).show();
                                         Log.i(LOG_TAG, t.getMessage(), t);
                                     }
@@ -119,6 +130,8 @@ public class DeviceListFragment extends Fragment {
         devicesList = a.findViewById(R.id.devices_recycler_view);
         a = null;
         devicesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        progressBar.setVisibility(View.GONE);
+        devicesList.setVisibility(View.VISIBLE);
         deviceAdapter = new DeviceListRecyclerAdapter(devices, mTwoPane);
         devicesList.setAdapter(deviceAdapter);
         deviceAdapter.setmOnLongClickListener(mAdapterOnLongClickListener);
@@ -190,6 +203,7 @@ public class DeviceListFragment extends Fragment {
     }
 
     private void editItem(Device device) {
+
         Toast.makeText(getContext(), "Not implemented yet.", Toast.LENGTH_SHORT).show();
         NetworkService.getInstance().getApi().updateUserDevice(device.ownerId, device.id, device)
                 .enqueue(new Callback<DeviceProperty>() {
@@ -208,6 +222,9 @@ public class DeviceListFragment extends Fragment {
     }
 
     private void updateList() {
+        progressBar.setVisibility(View.VISIBLE);
+        devicesList.setVisibility(View.INVISIBLE);
+
         NetworkService.getInstance()
                 .getApi()
                 .getUsersDevices(userId)
@@ -216,6 +233,9 @@ public class DeviceListFragment extends Fragment {
                     public void onResponse(Call<Device[]> call, Response<Device[]> response) {
                         Log.i(LOG_TAG, "Device list downloaded");
                         deviceAdapter.setItems(response.body());
+
+                        progressBar.setVisibility(View.GONE);
+                        devicesList.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -266,20 +286,20 @@ public class DeviceListFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<Device> call, Throwable t) {
+                        public void onFailure(@NotNull Call<Device> call, @NotNull Throwable t) {
                             Log.i(LOG_TAG, t.getMessage(), t);
                         }
                     });
 
                 }
             });
-            dialog.show(getActivity().getSupportFragmentManager(), "DevicePropertyDialogFragment");
+            dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "DevicePropertyDialogFragment");
         }
     };
     
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_device_list, container, false);

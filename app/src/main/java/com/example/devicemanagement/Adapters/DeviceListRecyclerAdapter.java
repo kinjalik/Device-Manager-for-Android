@@ -16,6 +16,7 @@ import com.example.devicemanagement.Entities.Device;
 import com.example.devicemanagement.R;
 import com.google.gson.Gson;
 
+
 public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRecyclerAdapter.ViewHolder> {
     private final static String LOG_TAG = "DEVICE_RECYCLER_ADAPTER";
     public static String DEVICE_DATA = "device";
@@ -34,7 +35,6 @@ public class DeviceListRecyclerAdapter extends RecyclerView.Adapter<DeviceListRe
             Log.i(LOG_TAG, "Click on Device with ID: " + device.getId());
             if (mTwoPane) {
                 Snackbar.make(v, "Two Panel Mode - To implement", 2000);
-                // ToDo: Реализовать вывод на второй экран для планшета
             } else {
                 Context cntx = v.getContext();
 

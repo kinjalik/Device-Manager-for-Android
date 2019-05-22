@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toTopOf="@+id/s_register__form_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="username" />
 
     <EditText
         android:id="@+id/s_register__form_email"
@@ -29,7 +30,8 @@
         app:layout_constraintBottom_toTopOf="@+id/s_register__form_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="email" />
 
     <EditText
         android:id="@+id/s_register__form_name"
@@ -42,7 +44,8 @@
         app:layout_constraintBottom_toTopOf="@+id/s_register__form_surname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="name" />
 
     <EditText
         android:id="@+id/s_register__form_surname"
@@ -55,7 +58,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="surname" />
 
     <EditText
         android:id="@+id/s_register__form_password"
@@ -68,7 +72,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/s_register__form_surname" />
+        app:layout_constraintTop_toBottomOf="@+id/s_register__form_surname"
+        android:autofillHints="password" />
 
     <EditText
         android:id="@+id/s_register__form_repassword"
@@ -81,7 +86,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/s_register__form_password" />
+        app:layout_constraintTop_toBottomOf="@+id/s_register__form_password"
+        android:autofillHints="password" />
 
     <Button
         android:id="@+id/s_register__form_submit"

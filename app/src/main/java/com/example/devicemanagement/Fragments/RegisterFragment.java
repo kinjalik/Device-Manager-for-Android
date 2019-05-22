@@ -9,11 +9,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.devicemanagement.Activities.AuthorisationActivity;
@@ -23,7 +25,7 @@ import com.example.devicemanagement.Entities.User;
 import com.example.devicemanagement.Network.Authorisation;
 import com.example.devicemanagement.R;
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment   {
     public static String LOG_TAG = "F_REGISTER";
 
     Authorisation authorisation;
@@ -119,4 +121,28 @@ public class RegisterFragment extends Fragment {
     public RegisterFragment() {
         authorisation = Authorisation.getInstance(getContext());
     }
+
+//    @Override
+//    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//        switch (v.getId()) {
+//            case R.id.s_register__form_login:
+//                getActivity().findViewById(R.id.s_register__form_email).requestFocus();
+//                break;
+//            case R.id.s_register__form_email:
+//                getActivity().findViewById(R.id.s_register__form_name).requestFocus();
+//                break;
+//            case R.id.s_register__form_name:
+//                getActivity().findViewById(R.id.s_register__form_surname).requestFocus();
+//                break;
+//            case R.id.s_register__form_surname:
+//                getActivity().findViewById(R.id.s_register__form_password).requestFocus();
+//                break;
+//            case R.id.s_register__form_password:
+//                getActivity().findViewById(R.id.s_register__form_repassword).requestFocus();
+//                break;
+//            case R.id.s_register__form_repassword:
+//                getActivity().findViewById(R.id.s_register__form_submit).performClick();
+//        }
+//        return false;
+//    }
 }
