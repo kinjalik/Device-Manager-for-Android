@@ -1,5 +1,5 @@
 # Device Manager - Android Client
-**This is a part of my final project on course "Samsung IT School". All code, configurations, etc published under the MIT License**
+**This is a part of my final project on course "Samsung IT School". All code, configurations, etc published under the license, provided in LICENSE.md**
 ## Description
 This application stores an information about user's gadgets, such as an IMEI, Serial Number or other identificators.
 This information can be helpful in the next cases:
