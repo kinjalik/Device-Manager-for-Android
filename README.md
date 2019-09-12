@@ -9,12 +9,12 @@ This information can be helpful in the next cases:
 More information about the backend you can read in his [repository](https://github.com/kinjalik/Device-Manager-Backend)
 
 ## Screenshots
-![Splash Screen](/screenshots/splash_screen.png)
-![Login Screen](/screenshots/login_screen.png)
-![Profile Screen](/screenshots/profile_screen.png)
-![Device List](/screenshots/device_list.png)
-![Property List](/screenshots/property_list.png)
-![Edit Popup](/screenshots/edit_popup.png)
+<img src="/kinjalik/Device-Manager-for-Android/raw/master/screenshots/spash_screen.png" alt="Splash Screen" style="max-width:250px;">
+<img src="/kinjalik/Device-Manager-for-Android/raw/master/screenshots/login_screen.png" alt="Login Screen" style="max-width:250px;">
+<img src="/kinjalik/Device-Manager-for-Android/raw/master/screenshots/profile_screen.png" alt="Profile Screen" style="max-width:250px;">
+<img src="/kinjalik/Device-Manager-for-Android/raw/master/screenshots/device_list.png" alt="Device List" style="max-width:250px;">
+<img src="/kinjalik/Device-Manager-for-Android/raw/master/screenshots/property_list.png" alt="Property List" style="max-width:250px;">
+<img src="/kinjalik/Device-Manager-for-Android/raw/master/screenshots/edit_popup.png" alt="Edit Popup" style="max-width:250px;">
 
 ## Used Libraries
 - **Retrofit2** - for acting with a server through HTTP-queries
