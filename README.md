@@ -9,12 +9,12 @@ This information can be helpful in the next cases:
 More information about the backend you can read in his [repository](https://github.com/kinjalik/Device-Manager-Backend)
 
 ## Screenshots
-!(Splash Screen)[/screenshots/splash_screen.png]
-!(Login Screen)[/screenshots/login_screen.png]
-!(Profile Screen)[/screenshots/profile_screen.png]
-!(Device List)[/screenshots/device_list.png]
-!(Property List)[/screenshots/property_list.png]
-!(Edit Popup)[/screenshots/edit_popup.png]
+![Splash Screen](/screenshots/splash_screen.png)
+![Login Screen](/screenshots/login_screen.png)
+![Profile Screen](/screenshots/profile_screen.png)
+![Device List](/screenshots/device_list.png)
+![Property List](/screenshots/property_list.png)
+![Edit Popup](/screenshots/edit_popup.png)
 
 ## Used Libraries
 - **Retrofit2** - for acting with a server through HTTP-queries
